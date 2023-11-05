@@ -1,5 +1,3 @@
-// import { FiltersButton, type TodoFilters } from "../consts"
-
 import { type filterValue } from "../types"
 import { Filters } from "./Filters"
 
@@ -20,14 +18,26 @@ export const Footer: React.FC<Props> = ({
 
     return (
         <footer className="footer">
-            <div className="todo-count">
-                <strong>{activeCount}Tareas pendientes</strong>
-            </div>
+            <span className="todo-count">
+                <strong>{activeCount}Tareas Pendientes</strong>
+            </span>
 
             <Filters
                 filterSelected={filterSelected}
                 onFilterChange={handleFilterChange}
             />
+
+            {
+                completedCount > 0 && (
+                    <button
+                        className="clear-completed"
+                        onClick={onClearCompleted}
+                    >
+                        Borrar completadas
+                    </button>
+                )
+            }
+            
         </footer>
     )
 }
