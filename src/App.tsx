@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { Todos } from './components/Todos';
-import { filterValue, type TodoId, type Todo as TodoType } from './types';
+import { filterValue, type TodoTitle, type TodoId, type Todo as TodoType } from './types';
 import { TodoFilters } from './consts';
 import { Footer } from './components/Footer';
+import { Header } from './components/Header';
 
 
 const myTodos = [
   {
     id: 1,
     title: 'Hacer portfolio',
-    completed: true
+    completed: false
   },
   {
     id: 2,
@@ -27,7 +28,7 @@ const App = (): JSX.Element =>  {
 
   const [todos, setTodos] = useState(myTodos);
   const [filterSelected, setFilterSelected] = useState<filterValue>(TodoFilters.all);
-
+  const [nextId, setNextId] = useState(4)
 
   const handleRemove = ({id}: TodoId): void => {
       const newTodos = todos.filter(todo => todo.id !== id)
@@ -53,6 +54,10 @@ const App = (): JSX.Element =>  {
     setFilterSelected(filter);
   }
 
+  const handleRemoveAllCompleted = (): void => {
+    const newTodos = todos.filter(todo => !todo.completed)
+    setTodos(newTodos)
+  }
   const activeCount = todos.filter(todo =>!todo.completed).length
 
   const completedCount = todos.length - activeCount
@@ -63,11 +68,26 @@ const App = (): JSX.Element =>  {
     return todo
   })
 
+  const handleAddTodo = ({title}: TodoTitle): void => {
+    const newTodo = {
+      title,
+      id: nextId,
+      completed: false
+    }
+    console.log("Nuevo ID de tarea creada:", nextId)
+    const newTodos = [
+      ...todos,
+      newTodo
+    ]
+    setTodos(newTodos)
+    setNextId(nextId + 1)
+  } 
+
   return (
     <>
       {/* <h1>TODO APP</h1> */}
       <div className='todoapp'>
-
+      <Header onAddTodo={handleAddTodo}/>
       <Todos 
       onToggleCompleteTodo={handleCompleted}
       onRemove={handleRemove}
@@ -76,7 +96,7 @@ const App = (): JSX.Element =>  {
       activeCount={activeCount}
       completedCount={completedCount}
       filterSelected={filterSelected}
-      onClearCompleted={() => {}}
+      onClearCompleted={handleRemoveAllCompleted}
       handleFilterChange={handleFilterChange}
       />
       </div>

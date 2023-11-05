@@ -34,9 +34,7 @@ export const Filters: React.FC<Props> = (
                     </li>
                 )
             })
-
             }
-
         </ul>
     )
 }
