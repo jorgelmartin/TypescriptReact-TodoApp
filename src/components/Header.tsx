@@ -11,12 +11,13 @@ export const Header: React.FC<Props> = ({ onAddTodo }) => {
 
     return (
         <header className="header">
-            <h1>todo<img
+            <h1>TODO-APP<img
             style={{ 
-                width: '30em',
+                width: '1em',
                 height: 'auto'
             }}
-            src="https://es.wikipedia.org/wiki/TypeScript#/media/Archivo:Typescript_logo_2020.svg"/>
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
+            />
             </h1>
             <CreateTodo saveTodo={onAddTodo} />
         </header>

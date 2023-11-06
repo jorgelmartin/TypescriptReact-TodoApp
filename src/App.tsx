@@ -9,17 +9,17 @@ import { Header } from './components/Header';
 const myTodos = [
   {
     id: 1,
-    title: 'Hacer portfolio',
+    title: 'Portfolio',
     completed: false
   },
   {
     id: 2,
-    title: 'Aprender React con Typescript',
+    title: 'Proyecto React-Typescript',
     completed: false
   },
   {
     id: 3,
-    title: 'Aprender Angular',
+    title: 'Proyecto Angular',
     completed: false
   }
 ]
