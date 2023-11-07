@@ -2,7 +2,6 @@ import { Todos } from './components/Todos';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { useTodos } from '../hooks/useTodos'
-// import { TodoTitle } from './types';
 
 const App = (): JSX.Element =>  {
 

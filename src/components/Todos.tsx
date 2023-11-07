@@ -3,8 +3,8 @@ import { Todo } from "./Todo"
 
 interface Props {
     todos: TodoType[]
-    completedTodo: (id: number, completed: boolean) => void
-    onRemove: ( id: number ) => void
+    completedTodo: (id: string, completed: boolean) => void
+    onRemove: ( id: string ) => void
 }
 
 export const Todos: React.FC<Props> = ({

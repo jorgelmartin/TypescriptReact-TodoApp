@@ -1,11 +1,11 @@
 import { type Todo as TodoType, type TodoId } from '../types'
 
 interface Props {
-    id: number
+    id: string
     title: string
     completed: boolean
-    completedTodo: (id: number, completed: boolean) => void
-    onRemove: (id: number) => void
+    completedTodo: (id: string, completed: boolean) => void
+    onRemove: (id: string) => void
 } 
 
 export const Todo: React.FC<Props> = ({ 

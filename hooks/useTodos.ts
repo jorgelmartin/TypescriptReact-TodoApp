@@ -23,19 +23,17 @@ const initialState = {
 type Action =
     | { type: 'initTodos', payload: { todos: ListOfTodos } }
     | { type: 'clearCompleted' }
-    | { type: 'completed', payload: { id: number, completed: boolean } }
+    | { type: 'completed', payload: { id: string, completed: boolean } }
     | { type: 'filterChange', payload: { filter: filterValue } }
-    | { type: 'remove', payload: { id: number } }
+    | { type: 'remove', payload: { id: string } }
     | { type: 'save', payload: { title: string } }
-    | { type: 'updateTitle', payload: { id: number, title: string } }
+    | { type: 'updateTitle', payload: { id: string, title: string } }
 
 interface State {
     sync: boolean
     todos: ListOfTodos
     filterSelected: filterValue
 }
-
-let nextId = 1;
 
 const reducer = (state: State, action: Action): State => {
     if (action.type === 'initTodos') {
@@ -92,19 +90,19 @@ const reducer = (state: State, action: Action): State => {
     }
 
     if (action.type === 'save') {
-    const { title } = action.payload;
-    const newTodo = {
-        id: nextId,
-        title,
-        completed: false
-    };
-    nextId++; 
-    return {
-        ...state,
-        sync: true,
-        todos: [...state.todos, newTodo]
-    };
-}
+        const { title } = action.payload
+        const newTodo = {
+            id: crypto.randomUUID(),
+            title,
+            completed: false
+        }
+
+        return {
+            ...state,
+            sync: true,
+            todos: [...state.todos, newTodo]
+        }
+    }
 
     if (action.type === 'updateTitle') {
         const { id, title } = action.payload;
@@ -133,23 +131,23 @@ export const useTodos = (): {
     todos: ListOfTodos
     filterSelected: filterValue
     handleClearCompleted: () => void
-    handleCompleted: (id: number, completed: boolean) => void
+    handleCompleted: (id: string, completed: boolean) => void
     handleFilterChange: (filter: filterValue) => void
-    handleRemove: (id: number) => void
+    handleRemove: (id: string) => void
     handleSave: (title: string) => void
-    handleUpdateTitle: (params: { id: number, title: string }) => void
+    handleUpdateTitle: (params: { id: string, title: string }) => void
 } => {
     const [{ sync, todos, filterSelected }, dispatch] = useReducer(reducer, initialState)
 
-    const handleCompleted = (id: number, completed: boolean): void => {
+    const handleCompleted = (id: string, completed: boolean): void => {
         dispatch({ type: 'completed', payload: { id, completed } })
     }
 
-    const handleRemove = (id: number): void => {
+    const handleRemove = (id: string): void => {
         dispatch({ type: 'remove', payload: { id } })
     }
 
-    const handleUpdateTitle = ({ id, title }: { id: number, title: string }): void => {
+    const handleUpdateTitle = ({ id, title }: { id: string, title: string }): void => {
         dispatch({ type: 'updateTitle', payload: { id, title } })
     }
 
@@ -186,20 +184,11 @@ export const useTodos = (): {
 
     useEffect(() => {
         fetchTodos()
-            .then((todos) => {
-                // Asegúrate de que `todos` sea del tipo `ListOfTodos` y convierte los ids a números
-                const todosWithNumberIds = todos.map(todo => ({
-                    ...todo,
-                    id: parseInt(todo.id, 10),
-                }));
-    
-                const payload = { todos: todosWithNumberIds as ListOfTodos };
-                dispatch({ type: 'initTodos', payload });
+            .then(todos => {
+                dispatch({ type: 'initTodos', payload: { todos } })
             })
-            .catch((err) => {
-                console.error(err);
-            });
-    }, []);
+            .catch(err => { console.error(err) })
+    }, [])
 
     useEffect(() => {
         if (sync) {
