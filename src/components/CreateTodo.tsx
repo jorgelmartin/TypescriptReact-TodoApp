@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { TodoTitle } from "../types";
 
 interface Props {
-    saveTodo: (title: string) => void;
+    saveTodo: (id: string, text: string) => void;
 }
 export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
 
@@ -10,10 +9,12 @@ export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter' && inputValue !== '') {
-            saveTodo(inputValue)
-            setInputValue('')
+            // Supongamos que no tienes un 'id' aquí y solo necesitas el 'text'
+            const id = ''; // Modifica esto según tus necesidades
+            saveTodo(id, inputValue);
+            setInputValue('');
         }
-    }
+    };
     return (
         <input
             className="new-todo"

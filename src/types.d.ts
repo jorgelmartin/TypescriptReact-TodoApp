@@ -2,12 +2,13 @@ import { TodoFilters } from "./consts"
 
 export interface Todo {
     id: string,
-    title: string,
-    completed: boolean
+    text: string,
+    completed: boolean,
+    // userId: number
 }
 
 export type TodoId = Pick<Todo, 'id'>
-export type TodoTitle = Pick<Todo, 'title'>
+export type TodoText = Pick<Todo, 'text'>
 export type TodoCompleted = Pick<Todo, 'completed'>
 
 export type ListOfTodos = Todo[]

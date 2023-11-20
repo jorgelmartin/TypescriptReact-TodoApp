@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import { TodoFilters } from '../src/consts';
-import { fetchTodos, updateTodos } from '../src/services/services';
+import { getAllMyTodos, createTodo } from '../src/services/ApiCalls';
 import { type ListOfTodos, type filterValue } from '../src/types';
 
 const initialState = {
@@ -26,8 +26,8 @@ type Action =
     | { type: 'completed', payload: { id: string, completed: boolean } }
     | { type: 'filterChange', payload: { filter: filterValue } }
     | { type: 'remove', payload: { id: string } }
-    | { type: 'save', payload: { title: string } }
-    | { type: 'updateTitle', payload: { id: string, title: string } }
+    | { type: 'save', payload: { id: string, text: string } }
+    | { type: 'updateText', payload: { id: string, text: string } }
 
 interface State {
     sync: boolean
@@ -65,7 +65,6 @@ const reducer = (state: State, action: Action): State => {
                         completed
                     }
                 }
-
                 return todo
             })
         }
@@ -90,10 +89,10 @@ const reducer = (state: State, action: Action): State => {
     }
 
     if (action.type === 'save') {
-        const { title } = action.payload
+        const { text } = action.payload
         const newTodo = {
             id: crypto.randomUUID(),
-            title,
+            text,
             completed: false
         }
 
@@ -104,8 +103,8 @@ const reducer = (state: State, action: Action): State => {
         }
     }
 
-    if (action.type === 'updateTitle') {
-        const { id, title } = action.payload;
+    if (action.type === 'updateText') {
+        const { id, text } = action.payload;
         return {
             ...state,
             sync: true,
@@ -113,7 +112,7 @@ const reducer = (state: State, action: Action): State => {
                 if (todo.id === id) {
                     return {
                         ...todo,
-                        title
+                        text
                     };
                 };
 
@@ -134,8 +133,8 @@ export const useTodos = (): {
     handleCompleted: (id: string, completed: boolean) => void
     handleFilterChange: (filter: filterValue) => void
     handleRemove: (id: string) => void
-    handleSave: (title: string) => void
-    handleUpdateTitle: (params: { id: string, title: string }) => void
+    handleSave: (id: string, Text: string) => void
+    handleUpdateText: (params: { id: string, text: string }) => void
 } => {
     const [{ sync, todos, filterSelected }, dispatch] = useReducer(reducer, initialState)
 
@@ -147,12 +146,20 @@ export const useTodos = (): {
         dispatch({ type: 'remove', payload: { id } })
     }
 
-    const handleUpdateTitle = ({ id, title }: { id: string, title: string }): void => {
-        dispatch({ type: 'updateTitle', payload: { id, title } })
+    const handleUpdateText = ({ id, text }: { id: string, text: string }): void => {
+        dispatch({ type: 'updateText', payload: { id, text } })
     }
 
-    const handleSave = (title: string): void => {
-        dispatch({ type: 'save', payload: { title } });
+    const handleSave = async (text: string): Promise<void> => {
+        try {
+            const newTodo = await createTodo(text);
+    
+            if (newTodo) {
+                dispatch({ type: 'save', payload: { id: newTodo.id, text } });
+            }
+        } catch (error) {
+            console.error('Error creating todo:', error);
+        }
     }
 
     const handleClearCompleted = (): void => {
@@ -183,12 +190,20 @@ export const useTodos = (): {
     const activeCount = todos.length - completedCount
 
     useEffect(() => {
-        fetchTodos()
-            .then(todos => {
-                dispatch({ type: 'initTodos', payload: { todos } })
-            })
-            .catch(err => { console.error(err) })
-    }, [])
+        getAllMyTodos(userId)
+          .then(response => {
+            if ('todos' in response && Array.isArray(response.todos)) {
+              const { todos } = response;
+              console.log('Todos received:', todos);
+              dispatch({ type: 'initTodos', payload: { todos } });
+            } else {
+              console.error('Fetch returned invalid data:', response);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }, [userId, dispatch]);
 
     useEffect(() => {
         if (sync) {
@@ -205,7 +220,7 @@ export const useTodos = (): {
         handleFilterChange,
         handleRemove,
         handleSave,
-        handleUpdateTitle,
+        handleUpdateText,
         todos: filteredTodos
     }
 }

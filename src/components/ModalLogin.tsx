@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import { InputText } from './InputText';
 import '../index.css';
 import { AkdemyButton } from './TodoButton';
 import { useAuthUser } from '../../hooks/useAuthUser';
-
+// import { useSelector } from 'react-redux';
+// import { UserData } from '../types';
 
 interface ModalLoginProps {
     show: boolean;
@@ -15,12 +16,29 @@ interface ModalLoginProps {
 export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
 
 
+//     const userrr = useSelector((state: UserData) => state); // Asegúrate de importar y utilizar useSelector correctamente
+
+// useEffect(() => {
+//   console.log('Estado del usuario:', userrr);
+// }, [userrr]);
+
     const { user, setUser, userError, setUserError, submitHandler,submitHandlerRegister } = useAuthUser();
-    const [showUserNameInput, setShowUserNameInput] = useState(false);
-    const [showLoginButton, setShowLoginButton] = useState(true);
+    const [mode, setMode] = useState<'login' | 'register'>('login');
+
     const handleRegisterClick = () => {
-        setShowUserNameInput(true);
-        setShowLoginButton(false);
+        setMode('register');
+    };
+
+    const handleLoginClick = () => {
+        setMode('login');
+    };
+
+    const renderTitle = () => {
+        if (mode === 'login') {
+            return <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>;
+        } else {
+            return <Card.Title className="text-center mb-2 display-5"><strong>Registro</strong></Card.Title>;
+        }
     };
     return (
 
@@ -37,21 +55,21 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                                 border: '0.1em solid #614a1971',
                                 borderRadius: '2em'
                             }}>
-
+{renderTitle()}
                             {/* LOGIN TITLE */}
-                            {showLoginButton && (
+                            {/* {showLoginButton && (
                                     <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>
                                 )}
                             
                             {showUserNameInput && (
                                 <Card.Title className="text-center mb-2 display-5"><strong>Registro</strong></Card.Title>
-                            )}
+                            )} */}
 
                             <Card.Body className="loginDataUser">
                                 <Row className="justify-content-center align-items-center">
                                     <Col xs={10} md={6}>
                                         <Form as={Row}>
-                                            {showUserNameInput && (
+                                        {mode === 'register' && (
                                                 <Form.Group className="">
                                                     <div className="labelLogin">Nombre usuario:</div>
                                                     <Col>
@@ -108,29 +126,17 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                         <></>
                     )} */}
                             <div className="d-flex justify-content-center">
-                                {showLoginButton && (
-                                    <AkdemyButton
-                                        onClick={(e) => {
-                                            submitHandler(e, user);
-                                            setShowUserNameInput(false);
-                                        }}
-                                        text={"Entrar!"}
-                                    />
-                                )}
+                                <AkdemyButton
+                                    onClick={(e) => {
+                                        mode === 'login' ? submitHandler(e, user) : submitHandlerRegister(e, user);
+                                        setMode('login');
+                                    }}
+                                    text={mode === 'login' ? 'Entrar!' : 'Registrarme'}
+                                />
                             </div>
-                            <div className="d-flex justify-content-center mt-3">
-                                {showUserNameInput && (
-                                    <AkdemyButton
-                                        onClick={(e) => {
-                                            submitHandlerRegister(e, user);
-                                        }}
-                                        text={"Registrarme"}
-                                    />
-                                )}
-                            </div>
-                            <div className='d-flex'>
-                            <a onClick={handleRegisterClick} className='m-2'>Registrate</a>
-                            <a onClick={() => { setShowUserNameInput(false); setShowLoginButton(true); }} className='m-2'>Login</a>
+                            <div className="d-flex">
+                                <span onClick={handleRegisterClick} className='m-2 link'>Regístrate</span>
+                                <span onClick={handleLoginClick} className='m-2 link'>Login</span>
                             </div>
                             
                         </Card>

@@ -2,7 +2,7 @@ import { type Todo as TodoType, type TodoId } from '../types'
 
 interface Props {
     id: string
-    title: string
+    text: string
     completed: boolean
     completedTodo: (id: string, completed: boolean) => void
     onRemove: (id: string) => void
@@ -10,7 +10,7 @@ interface Props {
 
 export const Todo: React.FC<Props> = ({ 
     id, 
-    title, 
+    text, 
     completed, 
     onRemove, 
     completedTodo 
@@ -25,7 +25,7 @@ export const Todo: React.FC<Props> = ({
             type="checkbox"
             onChange={(e) => { completedTodo(id, e.target.checked) }}
             />
-            <label>{title}</label>
+            <label>{text}</label>
             <button
             className='destroy'
             onClick={() => { onRemove(id) }}

@@ -17,7 +17,11 @@ export const Footer: React.FC<Props> = ({
 }) => {
 
     return (
-        <footer className="footer">
+        <footer className="footer"
+            style=
+            {{
+                height: '2.4em'
+            }}>
             <span className="todo-count">
                 <strong>{activeCount}Tareas Pendientes</strong>
             </span>
@@ -37,7 +41,7 @@ export const Footer: React.FC<Props> = ({
                     </button>
                 )
             }
-            
+
         </footer>
     )
 }
