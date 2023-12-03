@@ -8,6 +8,7 @@ import { ModalLogin } from './components/ModalLogin';
 import { useTodosUser } from '../hooks/useTodosUser';
 import { useSelector } from 'react-redux';
 import { UserData } from './types';
+import { Footer } from './components/Footer';
 
 const App = (): JSX.Element => {
   const token = useSelector((state: UserData) => state.user.credentials.token);
@@ -18,8 +19,13 @@ const App = (): JSX.Element => {
     addTodo,
     updateCompleted,
     updateText,
-    removeTodo
-    
+    removeTodo,
+    setFilter ,
+    activeCount,
+    completedCount,
+    // filterSelected,
+    handleClearCompleted,
+
   } = useTodosUser()
   console.log('Todos rdddeceived:', todos);
 
@@ -41,22 +47,22 @@ const App = (): JSX.Element => {
         <Header
           addTodo={addTodo}
         />
-{/* <Todos todos={todos} /> */}
-    <Todos 
-todos={todos}
-    completedTodo={updateCompleted}
-    setTitle={updateText}
-    //  todos={filteredTodos}
-     removeTodo={removeTodo}
-      />
+        {/* <Todos todos={todos} /> */}
+        <Todos
+          todos={todos}
+          completedTodo={updateCompleted}
+          setTitle={updateText}
+          //  todos={filteredTodos}
+          removeTodo={removeTodo}
+        />
 
-        {/* <Footer
-      activeCount={activeCount}
-      completedCount={completedCount}
-      filterSelected={filterSelected}
-      onClearCompleted={handleClearCompleted}
-      handleFilterChange={handleFilterChange}
-      /> */}
+        <Footer
+          activeCount={activeCount}
+          completedCount={completedCount}
+          filterSelected={filterSelected}
+          onClearCompleted={handleClearCompleted}
+          handleFilterChange={(filter) => setFilter(filter)} 
+        />
       </div>
       <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>

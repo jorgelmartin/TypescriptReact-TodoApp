@@ -1,27 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
-// import { TodoFilters } from '../src/consts';
+import { TodoFilters } from '../src/consts';
 import { getAllMyTodos, createTodo, updateTodoText, updateTodoCompleted, deleteTodo  } from '../src/services/ApiCalls';
-import { UserData, type Todo as TodoType, Todo, ApiResponse } from '../src/types';
-import { log } from 'console';
+import { UserData, type Todo as TodoType, ApiResponse, filterValue } from '../src/types';
 
-export const useTodosUser = () => {
+
+interface TodosUser {
+  todos: TodoType[];
+  addTodo: (text: string) => void;
+  updateCompleted: (id: number, completed: boolean) => void;
+  removeTodo: (id: number) => void;
+  updateText: (params: { id: number; text: string }) => void;
+  setFilter: (filter: filterValue) => void;
+  activeCount: number;
+  completedCount: number;
+  handleFilterChange: (filter: filterValue) => void;
+  handleClearCompleted: () => void;
+}
+
+export const useTodosUser = ():TodosUser => {
     const [todos, setTodos] = useState<TodoType[]>([]);
-  // const [filter, setFilter] = useState<filterValue>(TodoFilters.all);
+  const [filter, setFilter] = useState<filterValue>(TodoFilters.all);
   const { credentials: { token }, data: { userId } } = useSelector((state: UserData) => state.user);
-
-  // console.log('User State:', { userId, token });
-  
-
 
   useEffect(() => {
     // Lógica para obtener todas las tareas del usuario cuando el componente se monta
     getAllMyTodos(userId, token).then((response) => {
-        setTodos(response.data.todos); // Asegúrate de ajustar según la estructura real de tu respuesta
+        setTodos(response.data.todos); 
     });
 }, [userId]);
-// console.log('Todos recibidos:', todos);
-  // console.log('Todos receiddholaaaddved:', todos);
 
   const addTodo = (text: string) => {
     createTodo({ text, user_id: userId }, token)
@@ -36,23 +43,25 @@ export const useTodosUser = () => {
         });
 };
 
-  const updateText = (params: { id: number, text: string }) => {
-    // Lógica para actualizar el texto de una tarea
-    const { id, text } = params;
-    updateTodoText(id, text, token)
-      .then((response) => {
-        // Actualizar el estado de las tareas después de la actualización
-        setTodos((prevTodos) =>
-          prevTodos.map((todo) =>
-            todo.id === id ? { ...todo, text: response.data.todo.text } : todo
-          )
-        );
-      })
-      .catch((error) => {
-        console.error('Error updating todo text:', error);
-      });
-};
+const updateText = (params: { id: number; text: string }) => {
+  console.log('Updating text for todo with id:', params.id);
+  
+  const { id, text } = params;
+  const newText = text.trim();
 
+  updateTodoText(id, newText, token)
+    .then((response) => {
+      console.log('Update successful. Response:', response);
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === id ? { ...todo, text: response.data.todo.text } : todo
+        )
+      );
+    })
+    .catch((error) => {
+      console.error('Error updating todo text:', error);
+    });
+};
 
   const updateCompleted = (id: number, completed: boolean) => {
     // Lógica para actualizar el estado completado de una tarea
@@ -79,13 +88,48 @@ export const useTodosUser = () => {
             console.error('Error al borrar el todo:', error);
         });
 };
+
+// Función para filtrar los todos según el filtro seleccionado
+const filterTodos = (todos: TodoType[]): TodoType[] => {
+  switch (filter) {
+    case TodoFilters.active:
+      return todos.filter((todo) => !todo.completed);
+    case TodoFilters.completed:
+      return todos.filter((todo) => todo.completed);
+    default:
+      return todos;
+  }
+};
+
+const activeCount = todos.filter((todo) => !todo.completed).length;
+  const completedCount = todos.filter((todo) => todo.completed).length;
+  const handleFilterChange = (filter: filterValue) => {
+    setFilter(filter);
+  };
+
+
+  const handleClearCompleted = () => {
+    const completedTodoIds = todos
+      .filter((todo) => todo.completed)
+      .map((completedTodo) => completedTodo.id);
+  
+    // Actualiza la lista de todos excluyendo los completados
+    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
+  
+    // Llama a la función removeTodo para eliminar los todos completados en el servidor
+    completedTodoIds.forEach((id) => removeTodo(id));
+  };
     return{ 
-        todos,
         updateText,
         updateCompleted,
         removeTodo,
+        todos: filterTodos(todos),
         // filter,
-        // setFilter,
+        setFilter,
+        activeCount,
+        completedCount,
         addTodo,
+        handleFilterChange,
+        handleClearCompleted
     }
 }
