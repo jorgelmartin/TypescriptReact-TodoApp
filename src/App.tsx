@@ -1,33 +1,31 @@
 
 import { useState, useEffect } from 'react';
 import { Todos } from './components/Todos';
-import { Footer } from './components/Footer';
+// import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-import { useTodos } from '../hooks/useTodos'
+// import { useTodos } from '../hooks/useTodos'
 import { ModalLogin } from './components/ModalLogin';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useTodosUser } from '../hooks/useTodosUser';
+import { useSelector } from 'react-redux';
+import { UserData } from './types';
 
-const App = (): JSX.Element =>  {
+const App = (): JSX.Element => {
+  const token = useSelector((state: UserData) => state.user.credentials.token);
+
 
   const {
-    activeCount,
-    completedCount,
-    filterSelected,
-    handleClearCompleted,
-    handleCompleted,
-    handleFilterChange,
-    handleRemove,
-    handleSave,
-    todos: filteredTodos
-  } = useTodos()
-
+    todos,
+    addTodo,
+    updateCompleted,
+    updateText,
+    removeTodo
+    
+  } = useTodosUser()
+  console.log('Todos rdddeceived:', todos);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   useEffect(() => {
     // Check if there is a token available (replace with your actual logic)
-    const token = localStorage.getItem('token');
     if (!token) {
       setShowLoginModal(true);
     }
@@ -39,28 +37,28 @@ const App = (): JSX.Element =>  {
   // };
   return (
     <>
-    <Provider store={store}>
       <div className='todoapp'>
-      <Header 
-      saveTodo={handleSave}
+        <Header
+          addTodo={addTodo}
+        />
+{/* <Todos todos={todos} /> */}
+    <Todos 
+todos={todos}
+    completedTodo={updateCompleted}
+    setTitle={updateText}
+    //  todos={filteredTodos}
+     removeTodo={removeTodo}
       />
 
-      <Todos 
-      completedTodo={handleCompleted}
-      onRemove={handleRemove}
-      todos={filteredTodos}
-      />
-
-      <Footer
+        {/* <Footer
       activeCount={activeCount}
       completedCount={completedCount}
       filterSelected={filterSelected}
       onClearCompleted={handleClearCompleted}
       handleFilterChange={handleFilterChange}
-      />
+      /> */}
       </div>
       <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      </Provider>
     </>
   )
 }

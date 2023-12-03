@@ -27,7 +27,7 @@ export const useAuthUser = (
         //SEND TOKEN AND DATA
         loginMe(body)
             .then((res) => {
-                console.log("soyla", res.data);
+                console.log("soyla", res);
 
                 setToken(res.data.token);
                 setUserLogin(res.data);
@@ -55,8 +55,8 @@ export const useAuthUser = (
             dispatch(
                 login({
                     token: userLogin.token,
-                    userName: userLogin.userName,
-                    userId: userLogin.id,
+                    userName: userLogin.user.userName,
+                    userId: userLogin.user.id,
                 })
             );
         }
