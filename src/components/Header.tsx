@@ -7,7 +7,7 @@ interface Props {
 export const Header: React.FC<Props> = ({ addTodo }) => {
     return (
         <header className="header">
-            <h1 className="mt-4">
+            <h1 className="mt-5" >
                 <strong>TODO</strong>
                 <img
                     style={{ width: '0.6em' }}

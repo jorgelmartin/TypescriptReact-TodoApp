@@ -5,7 +5,6 @@ interface TodoButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
   children?: ReactNode;
   text?: string;
-  type?: string;
 }
 
 export const TodoButton: React.FC<TodoButtonProps> = ({ onClick, children, text }: TodoButtonProps) => {

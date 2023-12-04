@@ -7,14 +7,16 @@ import { useTodosUser } from '../hooks/useTodosUser';
 import { useSelector } from 'react-redux';
 import { UserData } from './types';
 import { Footer } from './components/Footer';
+import { logout } from './userSlice';
 import './index.css';
 import { Container } from 'react-bootstrap';
 import { TodoButton } from './components/TodoButton';
+import { useDispatch } from 'react-redux';
 
 const App = (): JSX.Element => {
   const token = useSelector((state: UserData) => state.user.credentials.token);
 
-
+  const dispatch = useDispatch();
   const {
     todos,
     addTodo,
@@ -26,7 +28,6 @@ const App = (): JSX.Element => {
     filterSelected,
     handleClearCompleted,
     handleFilterChange
-
   } = useTodosUser()
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -36,42 +37,49 @@ const App = (): JSX.Element => {
       setShowLoginModal(true);
     }
   }, []);
-  // const handleLoginClick = () => {
-  //   // Implement your login logic here
-  //   // For simplicity, just closing the modal for demonstration purposes
-  //   setShowLoginModal(false);
-  // };
+
+  const handleLogout = () => {
+    dispatch(logout());
+
+  };
+  const handleClick = () => {
+    setShowLoginModal(true);
+  };
   return (
 
-  <>
-<Container>
-  {/* <TodoButton/> */}
-      <div className='todoapp' >
-        <Header
-          addTodo={addTodo}
-        />
-        {/* <Todos todos={todos} /> */}
-        <Todos
-          todos={todos}
-          completedTodo={updateCompleted}
-          setTitle={updateText}
-          //  todos={filteredTodos}
-          removeTodo={removeTodo}
-        />
+    <>
+      <Container>
+        {token ? (
+          <TodoButton text="Salir" onClick={handleLogout} />
+        ) : (
+          <TodoButton onClick={handleClick} text='Log in' />
+        )}
+        <div className='todoapp' >
+          <Header
+            addTodo={addTodo}
+          />
+          {/* <Todos todos={todos} /> */}
+          <Todos
+            todos={todos}
+            completedTodo={updateCompleted}
+            setTitle={updateText}
+            //  todos={filteredTodos}
+            removeTodo={removeTodo}
+          />
 
-        <Footer
-          activeCount={activeCount}
-          completedCount={completedCount}
-          filterSelected={filterSelected}
-          onClearCompleted={handleClearCompleted}
-          handleFilterChange={handleFilterChange}
-        />
-        <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      </div>
+          <Footer
+            activeCount={activeCount}
+            completedCount={completedCount}
+            filterSelected={filterSelected}
+            onClearCompleted={handleClearCompleted}
+            handleFilterChange={handleFilterChange}
+          />
+          <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
+        </div>
       </Container>
-      </>
+    </>
 
-  
+
   )
 }
 export default App

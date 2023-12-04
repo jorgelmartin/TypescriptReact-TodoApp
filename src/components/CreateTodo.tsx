@@ -15,6 +15,7 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
     };
 
     return (
+        <div style={{marginTop:'-3em'} }>
         <input
             className="new-todo"
             value={inputValue}
@@ -25,5 +26,6 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
             placeholder='Escribe tu próxima tarea'
             autoFocus
         />
+        </div>
     );
 };
