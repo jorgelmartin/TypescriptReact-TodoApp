@@ -20,17 +20,18 @@ export const Footer: React.FC<Props> = ({
         <footer className="footer"
             style=
             {{
-                height: '2.4em'
+                height: '4em'
             }}>
-            <span className="todo-count">
-                <strong>{activeCount}Tareas Pendientes</strong>
-            </span>
+            <div className="todo-count mt-4">
+                <strong>{activeCount} Tareas Pendientes</strong>
+            </div>
 
             <Filters
                 filterSelected={filterSelected}
                 onFilterChange={handleFilterChange}
             />
 
+<div className="mt-4">
             {
                 completedCount > 0 && (
                     <button
@@ -41,7 +42,7 @@ export const Footer: React.FC<Props> = ({
                     </button>
                 )
             }
-
+</div>
         </footer>
     )
 }

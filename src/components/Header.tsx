@@ -1,22 +1,21 @@
 import { CreateTodo } from "./CreateTodo";
 
 interface Props {
-    saveTodo: (id: string, text: string) => void;
+    addTodo: (text: string) => void;
 }
 
-export const Header: React.FC<Props> = ({ saveTodo  }) => {
-
+export const Header: React.FC<Props> = ({ addTodo }) => {
     return (
         <header className="header">
-            <h1>TODO<img
-            style={{ 
-                width: '0.6em',
-                // height: 'auto'
-            }}
-            src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
-            />
+            <h1 className="mt-4">
+                <strong>TODO</strong>
+                <img
+                    style={{ width: '0.6em' }}
+                    src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
+                    alt="Typescript Logo"
+                />
             </h1>
-            <CreateTodo saveTodo={saveTodo } />
+            <CreateTodo addTodo={addTodo} />
         </header>
-    )
-}
+    );
+};

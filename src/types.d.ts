@@ -1,10 +1,26 @@
-import { TodoFilters } from "./consts"
+import { TodoFilters } from "./consts";
 
 export interface Todo {
-    id: string,
+    id: number,
     text: string,
     completed: boolean,
-    // userId: number
+}
+
+export interface UserData {
+    user: {
+        credentials: {
+            token: string;
+        };
+        data: {
+            userName: string;
+            userId: number;
+        };
+    };
+}
+
+export interface ApiResponse {
+    success: boolean;
+    todo: Todo; 
 }
 
 export type TodoId = Pick<Todo, 'id'>

@@ -44,7 +44,7 @@ export const createTodo = async (todo: Todo, token: string): Promise<AxiosRespon
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log('Respuesta exitosa:', res.data);
+        console.log('Respuesta exitosa:', res);
         return res;
     } catch (error) {
         console.error('Error en la solicitud:', error);
@@ -68,7 +68,7 @@ export const getAllMyTodos = async (userId: number, token: string): Promise<Axio
     }
 };
 
-export const updateTodoText = async (todoId: number, newText: string, token: string): Promise<AxiosResponse<any>> => {
+export const updateTodoText = async (todoId: number, newText: string, token: string): Promise<AxiosResponse<ApiResponse>> => {
     try {
         const res = await axios.put(
             `${URLTODO}update/${todoId}`,

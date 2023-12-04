@@ -1,17 +1,17 @@
 import React, { ReactNode, MouseEventHandler } from 'react';
 import '../index.css';
 
-interface AkdemyButtonProps {
+interface TodoButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
   children?: ReactNode;
   text?: string;
   type?: string;
 }
 
-export const AkdemyButton: React.FC<AkdemyButtonProps> = ({ onClick, children, text }: AkdemyButtonProps) => {
+export const TodoButton: React.FC<TodoButtonProps> = ({ onClick, children, text }: TodoButtonProps) => {
   return (
     <div className='borderAkdemy'>
-      <button className="akdemyButton" onClick={onClick}>
+      <button className="TodoButton" onClick={onClick}>
         {children} {text}
       </button>
     </div>

@@ -1,14 +1,15 @@
 
 import { useState, useEffect } from 'react';
 import { Todos } from './components/Todos';
-// import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-// import { useTodos } from '../hooks/useTodos'
 import { ModalLogin } from './components/ModalLogin';
 import { useTodosUser } from '../hooks/useTodosUser';
 import { useSelector } from 'react-redux';
 import { UserData } from './types';
 import { Footer } from './components/Footer';
+import './index.css';
+import { Container } from 'react-bootstrap';
+import { TodoButton } from './components/TodoButton';
 
 const App = (): JSX.Element => {
   const token = useSelector((state: UserData) => state.user.credentials.token);
@@ -20,14 +21,13 @@ const App = (): JSX.Element => {
     updateCompleted,
     updateText,
     removeTodo,
-    setFilter ,
     activeCount,
     completedCount,
-    // filterSelected,
+    filterSelected,
     handleClearCompleted,
+    handleFilterChange
 
   } = useTodosUser()
-  console.log('Todos rdddeceived:', todos);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   useEffect(() => {
@@ -42,8 +42,11 @@ const App = (): JSX.Element => {
   //   setShowLoginModal(false);
   // };
   return (
-    <>
-      <div className='todoapp'>
+
+  <>
+<Container>
+  {/* <TodoButton/> */}
+      <div className='todoapp' >
         <Header
           addTodo={addTodo}
         />
@@ -61,11 +64,14 @@ const App = (): JSX.Element => {
           completedCount={completedCount}
           filterSelected={filterSelected}
           onClearCompleted={handleClearCompleted}
-          handleFilterChange={(filter) => setFilter(filter)} 
+          handleFilterChange={handleFilterChange}
         />
+        <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
       </div>
-      <ModalLogin show={showLoginModal} onClose={() => setShowLoginModal(false)} />
-    </>
+      </Container>
+      </>
+
+  
   )
 }
 export default App

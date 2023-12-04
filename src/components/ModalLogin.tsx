@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import { InputText } from './InputText';
 import '../index.css';
-import { AkdemyButton } from './TodoButton';
+import { TodoButton } from './TodoButton';
 import { useAuthUser } from '../../hooks/useAuthUser';
 // import { useSelector } from 'react-redux';
 // import { UserData } from '../types';
@@ -16,13 +16,13 @@ interface ModalLoginProps {
 export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
 
 
-//     const userrr = useSelector((state: UserData) => state); // Asegúrate de importar y utilizar useSelector correctamente
+    //     const userrr = useSelector((state: UserData) => state); // Asegúrate de importar y utilizar useSelector correctamente
 
-// useEffect(() => {
-//   console.log('Estado del usuario:', userrr);
-// }, [userrr]);
+    // useEffect(() => {
+    //   console.log('Estado del usuario:', userrr);
+    // }, [userrr]);
 
-    const { user, setUser, userError, setUserError, submitHandler,submitHandlerRegister } = useAuthUser();
+    const { user, setUser, userError, setUserError, submitHandler, submitHandlerRegister } = useAuthUser();
     const [mode, setMode] = useState<'login' | 'register'>('login');
 
     const handleRegisterClick = () => {
@@ -55,7 +55,7 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                                 border: '0.1em solid #614a1971',
                                 borderRadius: '2em'
                             }}>
-{renderTitle()}
+                            {renderTitle()}
                             {/* LOGIN TITLE */}
                             {/* {showLoginButton && (
                                     <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>
@@ -69,7 +69,7 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                                 <Row className="justify-content-center align-items-center">
                                     <Col xs={10} md={6}>
                                         <Form as={Row}>
-                                        {mode === 'register' && (
+                                            {mode === 'register' && (
                                                 <Form.Group className="">
                                                     <div className="labelLogin">Nombre usuario:</div>
                                                     <Col>
@@ -126,7 +126,7 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                         <></>
                     )} */}
                             <div className="d-flex justify-content-center">
-                                <AkdemyButton
+                                <TodoButton
                                     onClick={(e) => {
                                         mode === 'login' ? submitHandler(e, user) : submitHandlerRegister(e, user);
                                         setMode('login');
@@ -138,7 +138,7 @@ export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
                                 <span onClick={handleRegisterClick} className='m-2 link'>Regístrate</span>
                                 <span onClick={handleLoginClick} className='m-2 link'>Login</span>
                             </div>
-                            
+
                         </Card>
                     </Row>
                 </Container>

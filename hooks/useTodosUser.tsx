@@ -16,12 +16,14 @@ interface TodosUser {
   completedCount: number;
   handleFilterChange: (filter: filterValue) => void;
   handleClearCompleted: () => void;
+  filterSelected: filterValue;
 }
 
 export const useTodosUser = ():TodosUser => {
     const [todos, setTodos] = useState<TodoType[]>([]);
-  const [filter, setFilter] = useState<filterValue>(TodoFilters.all);
+  // const [filter, setFilter] = useState<filterValue>(TodoFilters.all);
   const { credentials: { token }, data: { userId } } = useSelector((state: UserData) => state.user);
+  const [filterSelected, setFilterSelected] = useState<filterValue>(TodoFilters.all);
 
   useEffect(() => {
     // Lógica para obtener todas las tareas del usuario cuando el componente se monta
@@ -90,21 +92,22 @@ const updateText = (params: { id: number; text: string }) => {
 };
 
 // Función para filtrar los todos según el filtro seleccionado
-const filterTodos = (todos: TodoType[]): TodoType[] => {
-  switch (filter) {
-    case TodoFilters.active:
-      return todos.filter((todo) => !todo.completed);
-    case TodoFilters.completed:
-      return todos.filter((todo) => todo.completed);
-    default:
-      return todos;
+const filterTodos = todos.filter((todo) => {
+  if (filterSelected === TodoFilters.active) {
+    return !todo.completed;
   }
-};
+
+  if (filterSelected === TodoFilters.completed) {
+    return todo.completed;
+  }
+
+  return true;
+});
 
 const activeCount = todos.filter((todo) => !todo.completed).length;
   const completedCount = todos.filter((todo) => todo.completed).length;
   const handleFilterChange = (filter: filterValue) => {
-    setFilter(filter);
+    setFilterSelected(filter);
   };
 
 
@@ -119,17 +122,27 @@ const activeCount = todos.filter((todo) => !todo.completed).length;
     // Llama a la función removeTodo para eliminar los todos completados en el servidor
     completedTodoIds.forEach((id) => removeTodo(id));
   };
+
+  const setFilter = (filter: filterValue) => {
+    // Actualizamos el estado de filterSelected
+    setFilterSelected(filter);
+
+    // Lógica adicional si es necesario
+    // Por ejemplo, llamar a una función de filtrado o hacer otras acciones relacionadas con el cambio de filtro
+    // handleFilterChange(filter);
+  };
     return{ 
         updateText,
         updateCompleted,
         removeTodo,
-        todos: filterTodos(todos),
+        todos: filterTodos,
         // filter,
         setFilter,
         activeCount,
         completedCount,
         addTodo,
         handleFilterChange,
-        handleClearCompleted
+        handleClearCompleted,
+        filterSelected,
     }
 }

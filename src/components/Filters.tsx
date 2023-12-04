@@ -1,4 +1,4 @@
-import { FiltersButton, type TodoFilters } from "../consts"
+import { FiltersButton} from "../consts"
 import { filterValue } from "../types"
 
 
@@ -13,7 +13,7 @@ export const Filters: React.FC<Props> = (
 
     // const handleClick = (filter: filterValue)
     return(
-        <ul className="filters">
+        <ul className="filters mb-3">
             {
             Object.entries(FiltersButton).map(( [key, {href, literal}] ) =>{
                 const isSelected = key  == filterSelected
