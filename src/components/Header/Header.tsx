@@ -1,4 +1,4 @@
-import { CreateTodo } from "./CreateTodo";
+import { CreateTodo } from "../CreateTodo/CreateTodo";
 
 interface Props {
     addTodo: (text: string) => void;

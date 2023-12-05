@@ -1,7 +1,7 @@
 
 import { useState } from "react"
-import { type Todo as TodoType } from "../types"
-import { Todo } from "./Todo"
+import { type Todo as TodoType } from "../../types"
+import { Todo } from "../Todo/Todo"
 
 interface Props {
     todos: TodoType[]

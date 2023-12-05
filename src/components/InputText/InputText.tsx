@@ -1,7 +1,6 @@
 import React, { ChangeEvent, ReactElement } from 'react';
-
-import '../index.css';
-import { checkError } from '../services/useful';
+import '../../index.css';
+import { checkError } from '../../services/useful';
 
 interface User {
     email: string;

@@ -1,5 +1,5 @@
-import { type filterValue } from "../types"
-import { Filters } from "./Filters"
+import { type filterValue } from "../../types"
+import { Filters } from "../Filters/Filters"
 
 interface Props {
     activeCount: number,

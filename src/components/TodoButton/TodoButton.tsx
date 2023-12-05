@@ -1,5 +1,5 @@
 import React, { ReactNode, MouseEventHandler } from 'react';
-import '../index.css';
+import '../../index.css';
 
 interface TodoButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;

@@ -6,16 +6,24 @@ export interface Todo {
     completed: boolean,
 }
 
-export interface UserData {
-    user: {
-        credentials: {
-            token: string;
-        };
-        data: {
-            userName: string;
-            userId: number;
-        };
+export interface UserState {
+    credentials: {
+        token: string;
     };
+    data: {
+        userName: string;
+        userId: number;
+        role: string;
+    };
+}
+
+export interface UserData {
+    user: UserState;
+}
+
+export interface LoginResponse {
+    success: boolean;
+    data: UserData;
 }
 
 export interface ApiResponse {
@@ -23,9 +31,14 @@ export interface ApiResponse {
     todo: Todo; 
 }
 
-export type TodoId = Pick<Todo, 'id'>
-export type TodoText = Pick<Todo, 'text'>
-export type TodoCompleted = Pick<Todo, 'completed'>
+
+export interface User {
+    userName?: string;
+    email: string;
+    password: string;
+}
+
+
 
 export type ListOfTodos = Todo[]
 

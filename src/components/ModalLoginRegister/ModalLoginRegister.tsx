@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Container, Row, Form, Modal } from "react-bootstrap";
-import { InputText } from './InputText';
-import '../index.css';
-import { TodoButton } from './TodoButton';
-import { useAuthUser } from '../../hooks/useAuthUser';
+import { InputText } from '../InputText/InputText';
+import '../../index.css';
+import { TodoButton } from '../TodoButton/TodoButton';
+import { useAuthUser } from '../../../hooks/useAuthUser';
 // import { useSelector } from 'react-redux';
 // import { UserData } from '../types';
 
-interface ModalLoginProps {
+interface ModalLoginRegisterProps {
     show: boolean;
     onClose: () => void;
 }
 
 
-export const ModalLogin: React.FC<ModalLoginProps> = ({ show, onClose }) => {
+export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, onClose }) => {
 
 
     //     const userrr = useSelector((state: UserData) => state); // Asegúrate de importar y utilizar useSelector correctamente

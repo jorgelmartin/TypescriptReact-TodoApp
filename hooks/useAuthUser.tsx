@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Register, loginMe } from '../src/services/ApiCalls';
+import { Credentials, Register, loginMe } from '../src/services/ApiCalls';
 import { useDispatch } from "react-redux";
 import { login } from "../src/userSlice";
+import { User } from '../src/types';
 
-interface User {
-    userName?: string;
-    email: string;
-    password: string;
-}
 
 interface UserError {
     emailError: string;
     passwordError: string;
-}
+};
 
 export const useAuthUser = (
 ) => {
@@ -21,6 +17,8 @@ export const useAuthUser = (
     const [userLogin, setUserLogin] = useState<any | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const dispatch = useDispatch();
+
+
     const submitHandler = (e: React.MouseEvent<HTMLButtonElement>, body:User) => {
         e.preventDefault();
 
@@ -39,24 +37,31 @@ export const useAuthUser = (
     };
 
     const submitHandlerRegister = (e: React.MouseEvent<HTMLButtonElement>, body: User) => {
-        e.preventDefault();
-        Register(body)
-            .then((res) => {
-                setUserLogin(res.data);
-            })
-            .catch((error) => {
-                console.log("Se ha producido un error", error.message);
-                // setUserError({ credentials: error.response.data.message });
-            });
-    };
+    e.preventDefault();
+    const { userName, email, password } = body;
+    const credentials: Credentials = { email, password };
+    if (userName) {
+        credentials.user_name = userName; 
+    }
+    Register(credentials)
+    
+        .then((res) => {
+            setUserLogin(res.data);
+        })
+        .catch((error) => {
+            console.log("Se ha producido un error", error.message);
+            // setUserError({ credentials: error.response.data.message });
+        });
+};
 
     useEffect(() => {
         if (token) {
             dispatch(
                 login({
                     token: userLogin.token,
-                    userName: userLogin.user.userName,
+                    userName: userLogin.user.user_name,
                     userId: userLogin.user.id,
+                    role: userLogin.user.role
                 })
             );
         }

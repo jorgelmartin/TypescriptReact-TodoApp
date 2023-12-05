@@ -15,17 +15,17 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
     };
 
     return (
-        <div style={{marginTop:'-3em'} }>
-        <input
-            className="new-todo"
-            value={inputValue}
-            onChange={(e) => {
-                setInputValue(e.target.value);
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder='Escribe tu próxima tarea'
-            autoFocus
-        />
+        <div style={{ marginTop: '-3em' }}>
+            <input
+                className="new-todo"
+                value={inputValue}
+                onChange={(e) => {
+                    setInputValue(e.target.value);
+                }}
+                onKeyDown={handleKeyDown}
+                placeholder='Escribe tu próxima tarea'
+                autoFocus
+            />
         </div>
     );
 };

@@ -4,7 +4,8 @@ import { ApiResponse } from '../types';
 const URLAUTH = "/api/auth/";
 const URLTODO = "/api/todo/";
 
-interface Credentials {
+export interface Credentials {
+    user_name?: string;
     email: string;
     password: string;
 }
@@ -13,9 +14,21 @@ interface Todo {
     user_id: number;
     completed?: boolean;
 }
+interface LoginResponse {
+    token: string;
+    // Otras propiedades según la respuesta real del servidor
+}
 
+export interface RegisterResponse {
+    success: boolean;
+    message: string;
+    userRegistered: {
+        email: string;
+    };
+    token: string;
+}
 // LOGIN 
-export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<any>> => {
+export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<LoginResponse>> => {
     try {
         const res = await axios.post(`${URLAUTH}login`, credentials);
         console.log("Respuesta exitosa:", res.data);
@@ -26,7 +39,7 @@ export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<a
     }
 };
 
-export const Register = async (credentials: Credentials): Promise<AxiosResponse<any>> => {
+export const Register = async (credentials: Credentials): Promise<AxiosResponse<RegisterResponse>> => {
     try {
         const res = await axios.post(`${URLAUTH}register`, credentials);
         console.log("Respuesta exitosa:", res.data);
@@ -52,7 +65,7 @@ export const createTodo = async (todo: Todo, token: string): Promise<AxiosRespon
     }
 };
 
-export const getAllMyTodos = async (userId: number, token: string): Promise<AxiosResponse<any>> => {
+export const getAllMyTodos = async (userId: number, token: string): Promise<AxiosResponse<ApiResponse>> => {
     try {
         const res = await axios.get(`${URLTODO}getAll/${userId}`, {
             headers: {
@@ -87,7 +100,7 @@ export const updateTodoText = async (todoId: number, newText: string, token: str
     }
 };
 
-export const updateTodoCompleted = async (todoId: number, newCompleted: boolean, token: string): Promise<AxiosResponse<any>> => {
+export const updateTodoCompleted = async (todoId: number, newCompleted: boolean, token: string): Promise<AxiosResponse<ApiResponse>> => {
     try {
         const res = await axios.put(
             `${URLTODO}update/${todoId}`,
@@ -107,7 +120,7 @@ export const updateTodoCompleted = async (todoId: number, newCompleted: boolean,
     }
 };
 
-export const deleteTodo = async (id: number, token: string): Promise<AxiosResponse<any>> => {
+export const deleteTodo = async (id: number, token: string): Promise<AxiosResponse<ApiResponse>> => {
     try {
         const res = await axios.delete(`${URLTODO}delete/${id}`, {
             headers: {
