@@ -17,9 +17,6 @@ export const TodosUser = (): JSX.Element => {
     const token = useSelector((state: UserData) => state.user.credentials.token);
     const userName = useSelector((state: UserData) => state.user.data.userName);
 
-
-    console.log("UserName", userName);
-
     const dispatch = useDispatch();
     const {
         todos,
@@ -36,6 +33,7 @@ export const TodosUser = (): JSX.Element => {
 
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [todosVisible, setTodosVisible] = useState(!!true);
+    const [invertFilter, setInvertFilter] = useState(true);
     useEffect(() => {
         if (!token) {
             setShowLoginModal(true);
@@ -55,39 +53,54 @@ export const TodosUser = (): JSX.Element => {
     const handleClick = () => {
         setShowLoginModal(true);
     };
+
+    const handleFilterClick = () => {
+        setInvertFilter((prevInvertFilter) => !prevInvertFilter);
+        const currentFilter = getComputedStyle(document.documentElement).getPropertyValue('filter');
+        document.documentElement.style.filter = currentFilter === 'invert(1)' ? 'invert(0)' : 'invert(1)';
+      };
+    
     return (
 
         <>
-            <Container>
+        <Container style={{backgroundColor:'antiquewhite'}}>
+            <div className='borderContainer'>
                 {token ? (
                     <>
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
+                            justifyContent:'space-between',
                             marginTop: '-1em'
-                        }}>
+                        }}><strong>
                             <TodoButton
                                 text="Logout"
                                 onClick={handleLogout}
-                            />
+                            /></strong>
                             <div style={{
-                                color: 'white',
-                                backgroundColor: 'red',
+                                // color: 'white',
+                                // backgroundColor: 'red',
                                 marginTop: '1.3em',
                                 padding: '0.3em',
-                                borderRadius: '0.3em',
-                                marginLeft: '0.5em'
+                                // borderRadius: '0.3em',
+                                marginLeft: '0.5em',
                             }}>
-                                <div>Hola {userName}</div>
+                                {/* <h2 className='border'>{userName}</h2> */}
+                                <h2 className='wave'>{userName}</h2>
                             </div>
                         </div>
+                        <button style={{borderRadius:'2em'}} onClick={handleFilterClick}>🌙</button>
                     </>
                 ) : (
+                    <>
                     <TodoButton
                         onClick={handleClick}
                         text='Login'
                     />
+                    <button style={{borderRadius:'2em',  marginTop:'0.5em'}} onClick={handleFilterClick}>🌙</button>
+                    </>
                 )}
+                
 
 
                 <div className='todoapp'>
@@ -117,6 +130,7 @@ export const TodosUser = (): JSX.Element => {
                     )}
                     <ModalLoginRegister show={showLoginModal} onClose={() => setShowLoginModal(false)} />
                 </div>
+            </div>
             </Container>
         </>
     )
