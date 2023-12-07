@@ -1,32 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import { InputText } from '../InputText/InputText';
 import '../../index.css';
 import { TodoButton } from '../TodoButton/TodoButton';
 import { useAuthUser } from '../../../hooks/useAuthUser';
-// import { useSelector } from 'react-redux';
-// import { UserData } from '../types';
 
 interface ModalLoginRegisterProps {
     show: boolean;
     onClose: () => void;
 }
 
-
 export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, onClose }) => {
 
-
-    //     const userrr = useSelector((state: UserData) => state); // Asegúrate de importar y utilizar useSelector correctamente
-
-    // useEffect(() => {
-    //   console.log('Estado del usuario:', userrr);
-    // }, [userrr]);
-
-    const { user, setUser, userError, setUserError, submitHandler, submitHandlerRegister } = useAuthUser();
+    const { user, setUser, userError, setUserError, submitHandlerLogin, submitHandlerRegister } = useAuthUser();
     const [mode, setMode] = useState<'login' | 'register'>('login');
 
     const handleRegisterClick = () => {
         setMode('register');
+
     };
 
     const handleLoginClick = () => {
@@ -40,12 +31,10 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
             return <Card.Title className="text-center mb-2 display-5"><strong>Registro</strong></Card.Title>;
         }
     };
+
     return (
 
         <Modal show={show} onHide={onClose}>
-            {/* <Modal.Header closeButton> */}
-            {/* <Modal.Title className='text-center'>Login </Modal.Title> */}
-            {/* </Modal.Header> */}
             <Modal.Body>
                 <Container className="d-flex justify-content-center align-items-center mt-4">
                     <Row>
@@ -56,14 +45,6 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                 borderRadius: '2em'
                             }}>
                             {renderTitle()}
-                            {/* LOGIN TITLE */}
-                            {/* {showLoginButton && (
-                                    <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>
-                                )}
-                            
-                            {showUserNameInput && (
-                                <Card.Title className="text-center mb-2 display-5"><strong>Registro</strong></Card.Title>
-                            )} */}
 
                             <Card.Body className="loginDataUser">
                                 <Row className="justify-content-center align-items-center">
@@ -75,13 +56,14 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                                     <Col>
                                                         <InputText
                                                             type={"text"}
+                                                            design={userError.userNameError ? 'errorInput' : 'normalInput'}
                                                             name={"userName"}
                                                             placeholder={"TuNombreDeUsuario"}
                                                             state={setUser}
                                                             errorState={setUserError}
                                                         />
                                                     </Col>
-                                                    <div className="errorText">{userError.emailError}</div>
+                                                    <div className="errorText">{userError.userNameError}</div>
                                                 </Form.Group>
                                             )}
 
@@ -120,31 +102,30 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                     </Col>
                                 </Row>
                             </Card.Body>
-                            {/* {userError?.credentials ? (
-                        <div>{userError.credentials}</div>
-                    ) : (
-                        <></>
-                    )} */}
+                            {userError?.message ? (
+                                <div className="errorText">{userError.message}</div>
+                            ) : (
+                                <></>
+                            )}
                             <div className="d-flex justify-content-center">
                                 <TodoButton
                                     onClick={(e) => {
-                                        mode === 'login' ? submitHandler(e, user) : submitHandlerRegister(e, user);
-                                        setMode('login');
+                                        mode === 'login' ? submitHandlerLogin(e, user) : submitHandlerRegister(e, user);
+                                        // setMode('login');
+                                        // onClose();
                                     }}
-                                    text={mode === 'login' ? 'Entrar!' : 'Registrarme'}
+                                    text={mode === 'login' ? 'Get in!' : 'Register'}
                                 />
                             </div>
                             <div className="d-flex">
-                                <span onClick={handleRegisterClick} className='m-2 link'>Regístrate</span>
-                                <span onClick={handleLoginClick} className='m-2 link'>Login</span>
+                                <div onClick={handleRegisterClick} className='m-2' style={{ cursor: 'pointer' }}>Register</div>
+                                <div onClick={handleLoginClick} className='m-2' style={{ cursor: 'pointer' }}>Login</div>
                             </div>
 
                         </Card>
                     </Row>
                 </Container>
             </Modal.Body>
-            <Modal.Footer>
-            </Modal.Footer>
         </Modal>
     );
 };

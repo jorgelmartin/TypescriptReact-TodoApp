@@ -23,7 +23,7 @@ export const Footer: React.FC<Props> = ({
                 height: '4em'
             }}>
             <div className="todo-count mt-4">
-                <strong>{activeCount} Tareas Pendientes</strong>
+                <strong>{activeCount} Pending Tasks</strong>
             </div>
 
             <Filters
@@ -38,7 +38,7 @@ export const Footer: React.FC<Props> = ({
                         className="clear-completed"
                         onClick={onClearCompleted}
                     >
-                        Borrar completadas
+                        Delete completed
                     </button>
                 )
             }

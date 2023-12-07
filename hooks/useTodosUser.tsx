@@ -26,24 +26,26 @@ export const useTodosUser = ():TodosUser => {
   const [filterSelected, setFilterSelected] = useState<filterValue>(TodoFilters.all);
 
   useEffect(() => {
+    console.log("useEffect is running");
     // Lógica para obtener todas las tareas del usuario cuando el componente se monta
     getAllMyTodos(userId, token).then((response) => {
         setTodos(response.data.todos); 
     });
 }, [userId]);
 
-  const addTodo = (text: string) => {
-    createTodo({ text, user_id: userId }, token)
-        .then((response) => {
-          console.log("Todo created", response);
-          
-          const responseData = response.data as ApiResponse;
-          setTodos((prevTodos) => [...prevTodos, responseData.todo]);
-        })
-        .catch((error) => {
-            console.error('Error creating todo:', error);
-        });
+const addTodo = (text: string) => {
+  createTodo({ text, user_id: userId }, token)
+      .then((response) => {
+        console.log("Todo created", response);
+        
+        const responseData = response.data as ApiResponse;
+        setTodos((prevTodos) => [...prevTodos, responseData.todo]);
+      })
+      .catch((error) => {
+          console.error('Error creating todo:', error);
+      });
 };
+
 
 const updateText = (params: { id: number; text: string }) => {
   console.log('Updating text for todo with id:', params.id);
@@ -56,7 +58,7 @@ const updateText = (params: { id: number; text: string }) => {
       console.log('Update successful. Response:', response);
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
-          todo.id === id ? { ...todo, text: response.data.todo.text } : todo
+          todo.id === id ? { ...todo, text: newText } : todo
         )
       );
     })

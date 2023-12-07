@@ -23,7 +23,7 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
                     setInputValue(e.target.value);
                 }}
                 onKeyDown={handleKeyDown}
-                placeholder='Escribe tu próxima tarea'
+                placeholder='Write your task'
                 autoFocus
             />
         </div>

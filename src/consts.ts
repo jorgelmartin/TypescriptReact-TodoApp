@@ -6,15 +6,15 @@ export const TodoFilters = {
 
 export const FiltersButton = {
     [TodoFilters.all]: {
-        literal: 'Todos',
+        literal: 'All',
         href: `/?filter=${TodoFilters.all}`
     },
     [TodoFilters.active]: {
-        literal: 'Activos',
+        literal: 'Active',
         href: `/?filter=${TodoFilters.active}`
     },
     [TodoFilters.completed]: {
-        literal: 'Completados',
+        literal: 'Completed',
         href: `/?filter=${TodoFilters.completed}`
     }
 } as const

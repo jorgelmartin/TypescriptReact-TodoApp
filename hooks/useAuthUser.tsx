@@ -2,24 +2,23 @@ import { useState, useEffect } from 'react';
 import { Credentials, Register, loginMe } from '../src/services/ApiCalls';
 import { useDispatch } from "react-redux";
 import { login } from "../src/userSlice";
-import { User } from '../src/types';
+import { User, UserError } from '../src/types';
+import { useNavigate } from 'react-router-dom';
 
-
-interface UserError {
-    emailError: string;
-    passwordError: string;
-};
 
 export const useAuthUser = (
 ) => {
-    const [user, setUser] = useState<User>({ email: '', password: '' });
-    const [userError, setUserError] = useState<UserError>({ emailError: '', passwordError: '' });
+    const [user, setUser] = useState<User>({ userName:'', email: '', password: '' });
+    const [userError, setUserError] = useState<UserError>({ userNameError:'', emailError: '', passwordError: '', message: '' });
+
+
     const [userLogin, setUserLogin] = useState<any | null>(null);
     const [token, setToken] = useState<string | null>(null);
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-
-    const submitHandler = (e: React.MouseEvent<HTMLButtonElement>, body:User) => {
+    const submitHandlerLogin = (e: React.MouseEvent<HTMLButtonElement>, body:User) => {
         e.preventDefault();
 
         //SEND TOKEN AND DATA
@@ -29,10 +28,14 @@ export const useAuthUser = (
 
                 setToken(res.data.token);
                 setUserLogin(res.data);
+                navigate('/Todos'); 
             })
             .catch((error) => {
-                console.log("Se ha producido un error", error.message);
-                // setUserError({ credentials: error.response.data.message });
+                setUserError({
+                    emailError: error.response.data.emailError || '',  
+                    passwordError: error.response.data.passwordError || '', 
+                    message: error.response.data.message || '', 
+                });
             });
     };
 
@@ -47,15 +50,21 @@ export const useAuthUser = (
     
         .then((res) => {
             setUserLogin(res.data);
+            navigate('/Todos'); 
         })
         .catch((error) => {
-            console.log("Se ha producido un error", error.message);
-            // setUserError({ credentials: error.response.data.message });
+            // console.log("Se ha producido un error", error.message);
+            setUserError({
+                userNameError: error.response.data.userNameError || '',  // Ajusta según la estructura real de tu respuesta de error
+                emailError: error.response.data.emailError || '',  // Ajusta según la estructura real de tu respuesta de error
+                passwordError: error.response.data.passwordError || '',
+                message: error.response.data.message || '',  // Ajusta según la estructura real de tu respuesta de error
+            });
         });
 };
 
     useEffect(() => {
-        if (token) {
+        if (token && userLogin) {
             dispatch(
                 login({
                     token: userLogin.token,
@@ -74,7 +83,7 @@ export const useAuthUser = (
         setUserError,
         userLogin,
         setUserLogin,
-        submitHandler,
+        submitHandlerLogin,
         submitHandlerRegister,
     };
 };

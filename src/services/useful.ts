@@ -29,22 +29,12 @@ export const checkError = (name: string, value: string): string => {
             return "";
 
         //CHECKING NAME ERROR
-        case "name":
-            if (!/^[a-zA-Z]+$/.test(value)) {
-                return "El nombre debe contener solo letras";
-            }
-            if (value.length > 40) {
-                return "El nombre no pueden tener más de 30 caracteres";
-            }
-            return "";
-
-        //CHECKING SURNAME ERROR
-        case "surname":
-            if (!/^[a-zA-Z]+$/.test(value)) {
-                return "El apellido debe contener solo letras";
-            }
-            if (value.length > 40) {
-                return "El apellido no puede tener más de 30 caracteres";
+        case "userName":
+            // if (!/^[a-zA-Z]+$/.test(value)) {
+            //     return "El nombre debe contener solo letras";
+            // }
+            if (value.length > 10) {
+                return "No puede tener más de 12 caracteres";
             }
             return "";
 

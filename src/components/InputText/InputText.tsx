@@ -1,16 +1,18 @@
 import React, { ChangeEvent, ReactElement } from 'react';
 import '../../index.css';
 import { checkError } from '../../services/useful';
+import { User, UserError } from '../../types';
 
-interface User {
-    email: string;
-    password: string;
-}
+// interface User {
+//     email: string;
+//     password: string;
+// }
 
-interface UserError {
-    emailError: string;
-    passwordError: string;
-}
+// interface UserError {
+//     userNameError?: string;
+//     emailError: string;
+//     passwordError: string;
+// }
 
 interface InputTextProps {
     type: string;

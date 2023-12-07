@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ApiResponse } from '../types';
+import { ApiResponse, ApiResponseGetAll } from '../types';
 
 const URLAUTH = "/api/auth/";
 const URLTODO = "/api/todo/";
@@ -17,16 +17,16 @@ interface Todo {
 interface LoginResponse {
     token: string;
     // Otras propiedades según la respuesta real del servidor
-}
+  }
 
-export interface RegisterResponse {
+  export interface RegisterResponse {
     success: boolean;
     message: string;
     userRegistered: {
-        email: string;
+      email: string;
     };
     token: string;
-}
+  }
 // LOGIN 
 export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<LoginResponse>> => {
     try {
@@ -39,13 +39,13 @@ export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<L
     }
 };
 
-export const Register = async (credentials: Credentials): Promise<AxiosResponse<RegisterResponse>> => {
+export const Register = async (credentials: Credentials): Promise<AxiosResponse<any>> => {
     try {
         const res = await axios.post(`${URLAUTH}register`, credentials);
-        console.log("Respuesta exitosa:", res.data);
+        // console.log("Respuesta exitosa:", res.data);
         return res.data;
     } catch (error) {
-        console.error("Error en la solicitud:", error);
+        // console.error("Error en la solicitud:", error);
         throw error;
     }
 };
@@ -57,15 +57,15 @@ export const createTodo = async (todo: Todo, token: string): Promise<AxiosRespon
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log('Respuesta exitosa:', res);
+        // console.log('Respuesta exitosa:', res);
         return res;
     } catch (error) {
-        console.error('Error en la solicitud:', error);
+        // console.error('Error en la solicitud:', error);
         throw error;
     }
 };
 
-export const getAllMyTodos = async (userId: number, token: string): Promise<AxiosResponse<ApiResponse>> => {
+export const getAllMyTodos = async (userId: number, token: string): Promise<AxiosResponse<ApiResponseGetAll>> => {
     try {
         const res = await axios.get(`${URLTODO}getAll/${userId}`, {
             headers: {
@@ -73,10 +73,10 @@ export const getAllMyTodos = async (userId: number, token: string): Promise<Axio
                 // Otros encabezados si es necesario
             },
         });
-        console.log('Respuesta exitosa:', res.data);
+        // console.log('Respuesta exitosa:', res.data);
         return res;
     } catch (error) {
-        console.error('Error en la solicitud:', error);
+        // console.error('Error en la solicitud:', error);
         throw error;
     }
 };
