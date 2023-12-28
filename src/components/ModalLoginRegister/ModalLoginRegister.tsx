@@ -15,15 +15,17 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
     const { user, setUser, userError, setUserError, submitHandlerLogin, submitHandlerRegister } = useAuthUser();
     const [mode, setMode] = useState<'login' | 'register'>('login');
 
+    //SHOW REGISTER 
     const handleRegisterClick = () => {
         setMode('register');
-
     };
 
+    //SHOW LOGIN 
     const handleLoginClick = () => {
         setMode('login');
     };
 
+    //RENDER LOGIN / REGISTER TITLE
     const renderTitle = () => {
         if (mode === 'login') {
             return <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>;
@@ -34,6 +36,7 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
 
     return (
 
+        //MODAL LOGIN / REGISTER
         <Modal show={show} onHide={onClose}>
             <Modal.Body>
                 <Container className="d-flex justify-content-center align-items-center mt-4">
@@ -44,12 +47,16 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                 border: '0.1em solid #614a1971',
                                 borderRadius: '2em'
                             }}>
+
+                            {/* RENDER TITLE */}
                             {renderTitle()}
 
                             <Card.Body className="loginDataUser">
                                 <Row className="justify-content-center align-items-center">
                                     <Col xs={10} md={6}>
                                         <Form as={Row}>
+
+                                            {/* IF THE USER CLICKS ON REGISTER DISPLAY USERNAME */}
                                             {mode === 'register' && (
                                                 <Form.Group className="">
                                                     <div className="labelLogin">Nombre usuario:</div>
@@ -102,12 +109,16 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                     </Col>
                                 </Row>
                             </Card.Body>
+
+                            {/* ERROR MESSAGE */}
                             {userError?.message ? (
                                 <div className="errorText">{userError.message}</div>
                             ) : (
                                 <></>
                             )}
                             <div className="d-flex justify-content-center">
+
+                                {/* LOGIN / REGISTER BUTTON */}
                                 <TodoButton
                                     onClick={(e) => {
                                         mode === 'login' ? submitHandlerLogin(e, user) : submitHandlerRegister(e, user);
@@ -117,6 +128,8 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                     text={mode === 'login' ? 'Get in!' : 'Register'}
                                 />
                             </div>
+
+                            {/* HANDLE LOGIN / REGISTER  */}
                             <div className="d-flex">
                                 <div onClick={handleRegisterClick} className='m-2' style={{ cursor: 'pointer' }}>Register</div>
                                 <div onClick={handleLoginClick} className='m-2' style={{ cursor: 'pointer' }}>Login</div>

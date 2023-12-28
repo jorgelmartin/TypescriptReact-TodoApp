@@ -7,6 +7,8 @@ interface Props {
 export const Header: React.FC<Props> = ({ addTodo }) => {
     return (
         <header className="header">
+
+            {/* TITLE WITH TYPESCRIPT LOGO */}
             <h1 className="mt-5" >
                 <strong>TODO</strong>
                 <img
@@ -15,6 +17,8 @@ export const Header: React.FC<Props> = ({ addTodo }) => {
                     alt="Typescript Logo"
                 />
             </h1>
+
+            {/* CreateTodo COMPONENT FOR ADDING NEW TASK */}
             <CreateTodo addTodo={addTodo} />
         </header>
     );

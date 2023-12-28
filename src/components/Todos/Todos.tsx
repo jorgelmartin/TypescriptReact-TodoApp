@@ -16,20 +16,26 @@ export const Todos: React.FC<Props> = ({
     completedTodo,
     setTitle,
 }) => {
-    console.log('Todos received:', todos);
     const [isEditing, setIsEditing] = useState('')
 
     return (
         <div className="todo-list">
+
+            {/* MAPPING OVER TODOS AND RENDERING EACH TODO ITEM */}
             {todos?.map((todo) => (
                 <li
                     key={todo.id}
+
+                    //DOUBLE-CLICK HANDLER TO ENABLE EDITING MODE FOR THE CLICKED TODO
                     onDoubleClick={() => { setIsEditing(todo.id.toString()) }}
+
+                    //CONDITIONAL CLASS-NAMES BASED ON TODO COMPLETION AND EDITING STATE
                     className={`
                         ${todo.completed ? 'completed' : ''}
                         ${isEditing === todo.id.toString() ? 'editing' : ''}
                         `}
                 >
+                    {/* TODO COMPONENT */}
                     <Todo
                         key={todo.id}
                         id={todo.id}

@@ -24,8 +24,6 @@ export const useAuthUser = (
         //SEND TOKEN AND DATA
         loginMe(body)
             .then((res) => {
-                console.log("soyla", res);
-
                 setToken(res.data.token);
                 setUserLogin(res.data);
                 navigate('/Todos'); 
@@ -53,12 +51,11 @@ export const useAuthUser = (
             navigate('/Todos'); 
         })
         .catch((error) => {
-            // console.log("Se ha producido un error", error.message);
             setUserError({
-                userNameError: error.response.data.userNameError || '',  // Ajusta según la estructura real de tu respuesta de error
-                emailError: error.response.data.emailError || '',  // Ajusta según la estructura real de tu respuesta de error
+                userNameError: error.response.data.userNameError || '',
+                emailError: error.response.data.emailError || '', 
                 passwordError: error.response.data.passwordError || '',
-                message: error.response.data.message || '',  // Ajusta según la estructura real de tu respuesta de error
+                message: error.response.data.message || '',  
             });
         });
 };

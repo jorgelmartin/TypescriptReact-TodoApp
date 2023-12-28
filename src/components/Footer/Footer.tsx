@@ -1,6 +1,7 @@
 import { type filterValue } from "../../types"
 import { Filters } from "../Filters/Filters"
 
+//DEFINE PROPS
 interface Props {
     activeCount: number,
     completedCount: number,
@@ -8,6 +9,7 @@ interface Props {
     onClearCompleted: () => void
     handleFilterChange: (filter: filterValue) => void
 }
+
 export const Footer: React.FC<Props> = ({
     activeCount = 0,
     completedCount = 0,
@@ -17,32 +19,32 @@ export const Footer: React.FC<Props> = ({
 }) => {
 
     return (
-        <footer className="footer"
-            style=
-            {{
-                height: '4em'
-            }}>
+        <footer className="footer" style={{ height: '4em' }}>
+
+            {/* DISPLAY THE COUNT OF PENDING TASK */}
             <div className="todo-count mt-4">
                 <strong>{activeCount} Pending Tasks</strong>
             </div>
 
+            {/* FILTERS COMPONENT FOR TASK FILTERING */}
             <Filters
                 filterSelected={filterSelected}
                 onFilterChange={handleFilterChange}
             />
 
-<div className="mt-4">
-            {
-                completedCount > 0 && (
-                    <button
-                        className="clear-completed"
-                        onClick={onClearCompleted}
-                    >
-                        Delete completed
-                    </button>
-                )
-            }
-</div>
+            <div className="mt-4">
+                {/* SHOW "Delete completed" BUTTON IF THERE ARE COMPLETED TASK */}
+                {
+                    completedCount > 0 && (
+                        <button
+                            className="clear-completed"
+                            onClick={onClearCompleted}
+                        >
+                            Delete completed
+                        </button>
+                    )
+                }
+            </div>
         </footer>
     )
 }

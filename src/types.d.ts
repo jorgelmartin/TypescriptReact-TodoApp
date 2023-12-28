@@ -4,7 +4,7 @@ export interface Todo {
     id: number;
     text: string;
     completed: boolean;
-    user_id: number;
+    user_id?: number;
 }
 
 export interface UserState {
