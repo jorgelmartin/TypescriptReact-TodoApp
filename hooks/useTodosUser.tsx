@@ -92,11 +92,9 @@ export const useTodosUser = (): TodosUser => {
     if (filterSelected === TodoFilters.active) {
       return !todo.completed;
     }
-
     if (filterSelected === TodoFilters.completed) {
       return todo.completed;
     }
-
     return true;
   });
 
@@ -120,13 +118,9 @@ export const useTodosUser = (): TodosUser => {
   };
 
   const setFilter = (filter: filterValue) => {
-    // Actualizamos el estado de filterSelected
     setFilterSelected(filter);
-
-    // Lógica adicional si es necesario
-    // Por ejemplo, llamar a una función de filtrado o hacer otras acciones relacionadas con el cambio de filtro
-    // handleFilterChange(filter);
   };
+
   return {
     updateText,
     updateCompleted,
@@ -140,5 +134,5 @@ export const useTodosUser = (): TodosUser => {
     handleFilterChange,
     handleClearCompleted,
     filterSelected,
-  }
-}
+  };
+};

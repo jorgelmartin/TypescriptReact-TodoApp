@@ -5,12 +5,10 @@ import { login } from "../src/userSlice";
 import { User, UserError } from '../src/types';
 import { useNavigate } from 'react-router-dom';
 
-
 export const useAuthUser = (
 ) => {
     const [user, setUser] = useState<User>({ userName:'', email: '', password: '' });
     const [userError, setUserError] = useState<UserError>({ userNameError:'', emailError: '', passwordError: '', message: '' });
-
 
     const [userLogin, setUserLogin] = useState<any | null>(null);
     const [token, setToken] = useState<string | null>(null);

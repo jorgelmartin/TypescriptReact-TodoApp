@@ -83,9 +83,9 @@ html {
   rgba(26, 255, 0, 0.2) 0em 1em 1em inset;
 }
 
-.wave {
+.userName {
   color: rgba(42, 190, 64, 0.66);
   text-shadow:
-    -0.05em -0.05em 0 blue;
+    -0.04em -0.04em 0 blue;
 }
 

@@ -73,93 +73,93 @@ export const TodosUser = (): JSX.Element => {
     };
 
     return (
-            <Container style={{ backgroundColor: 'antiquewhite' }}>
-                <div className='borderContainer'>
+        <Container style={{ backgroundColor: 'antiquewhite' }}>
+            <div className='borderContainer'>
 
-                    {/* IF USER IS LOGIN SHOW LOGOUT BUTTON AND USERNAME */}
-                    {token ? (
-                        <>
+                {/* IF USER IS LOGIN SHOW LOGOUT BUTTON AND USERNAME */}
+                {token ? (
+                    <>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: '-1em'
+                            }}>
+                            <strong>
+                                <TodoButton
+                                    text="Logout"
+                                    onClick={handleLogout}
+                                />
+                            </strong>
                             <div
                                 style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    marginTop: '-1em'
+                                    marginTop: '1.3em',
+                                    padding: '0.3em',
+                                    marginLeft: '0.5em',
                                 }}>
-                                <strong>
-                                    <TodoButton
-                                        text="Logout"
-                                        onClick={handleLogout}
-                                    />
-                                </strong>
-                                <div
-                                    style={{
-                                        marginTop: '1.3em',
-                                        padding: '0.3em',
-                                        marginLeft: '0.5em',
-                                    }}>
-                                    <h2 className='wave'>{userName}</h2>
-                                </div>
+                                <h2 className='userName'>{userName}</h2>
                             </div>
+                        </div>
 
-                            {/* BUTTON DARK/LIGHT MODE */}
-                            <button 
-                            style={{ borderRadius: '2em' }} 
+                        {/* BUTTON DARK/LIGHT MODE */}
+                        <button
+                            style={{ borderRadius: '2em' }}
                             onClick={handleFilterClick}
-                            >🌙
-                            </button>
-                        </>
-                    ) : (
-                        <>
+                        >🌙
+                        </button>
+                    </>
+                ) : (
+                    <>
 
-                            {/* TODO BUTTON TO HANDLE LOGIN/REGISTER */}
-                            <TodoButton
-                                onClick={handleClick}
-                                text='Login'
+                        {/* TODO BUTTON TO HANDLE LOGIN/REGISTER */}
+                        <TodoButton
+                            onClick={handleClick}
+                            text='Login'
+                        />
+
+                        {/* BUTTON DARK/LIGHT MODE */}
+                        <button
+                            style={{ borderRadius: '2em', marginTop: '0.5em' }}
+                            onClick={handleFilterClick}
+                        >🌙
+                        </button>
+                    </>
+                )}
+
+                <div className='todoapp'>
+
+                    {/* HEADER COMPONENT */}
+                    <Header
+                        addTodo={addTodo}
+                    />
+
+                    {/* IF USER IS LOGIN SHOW TODOS */}
+                    {todosVisible && (
+                        <>
+                            {/* TODOS COMPONENT */}
+                            <Todos
+                                todos={todos}
+                                completedTodo={updateCompleted}
+                                setTitle={updateText}
+                                removeTodo={removeTodo}
                             />
 
-                            {/* BUTTON DARK/LIGHT MODE */}
-                            <button
-                                style={{ borderRadius: '2em', marginTop: '0.5em' }}
-                                onClick={handleFilterClick}
-                            >🌙
-                            </button>
+                            {/* FOOTER COMPONENT */}
+                            <Footer
+                                activeCount={activeCount}
+                                completedCount={completedCount}
+                                filterSelected={filterSelected}
+                                onClearCompleted={handleClearCompleted}
+                                handleFilterChange={handleFilterChange}
+                            />
                         </>
                     )}
 
-                    <div className='todoapp'>
-
-                        {/* HEADER COMPONENT */}
-                        <Header
-                            addTodo={addTodo}
-                        />
-
-                        {/* IF USER IS LOGIN SHOW TODOS */}
-                        {todosVisible && (
-                            <>
-                                {/* TODOS COMPONENT */}
-                                <Todos
-                                    todos={todos}
-                                    completedTodo={updateCompleted}
-                                    setTitle={updateText}
-                                    removeTodo={removeTodo}
-                                />
-
-                                {/* FOOTER COMPONENT */}
-                                <Footer
-                                    activeCount={activeCount}
-                                    completedCount={completedCount}
-                                    filterSelected={filterSelected}
-                                    onClearCompleted={handleClearCompleted}
-                                    handleFilterChange={handleFilterChange}
-                                />
-                            </>
-                        )}
-
-                        {/* MODAL LOGIN/REGISTER */}
-                        <ModalLoginRegister show={showLoginModal} onClose={() => setShowLoginModal(false)} />
-                    </div>
+                    {/* MODAL LOGIN/REGISTER */}
+                    <ModalLoginRegister show={showLoginModal} onClose={() => setShowLoginModal(false)} />
                 </div>
-            </Container>
+            </div>
+        </Container>
     )
 }

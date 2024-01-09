@@ -28,9 +28,17 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
     //RENDER LOGIN / REGISTER TITLE
     const renderTitle = () => {
         if (mode === 'login') {
-            return <Card.Title className="text-center mb-2 display-5"><strong>Iniciar sesión</strong></Card.Title>;
+            return <Card.Title className="text-center mb-2 display-5"
+                style={{ color: 'rgba(42, 190, 64, 0.66)', textShadow: '-0.04em -0.04em 0 blue' }}
+            >
+                <strong>Login</strong>
+            </Card.Title>;
         } else {
-            return <Card.Title className="text-center mb-2 display-5"><strong>Registro</strong></Card.Title>;
+            return <Card.Title className="text-center mb-2 display-5"
+                style={{ color: 'rgba(42, 190, 64, 0.66)', textShadow: '-0.04em -0.04em 0 blue' }}
+            >
+                <strong>Register</strong>
+            </Card.Title>;
         }
     };
 
@@ -59,13 +67,13 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                             {/* IF THE USER CLICKS ON REGISTER DISPLAY USERNAME */}
                                             {mode === 'register' && (
                                                 <Form.Group className="">
-                                                    <div className="labelLogin">Nombre usuario:</div>
+                                                    <div className="labelLogin">Username:</div>
                                                     <Col>
                                                         <InputText
                                                             type={"text"}
                                                             design={userError.userNameError ? 'errorInput' : 'normalInput'}
                                                             name={"userName"}
-                                                            placeholder={"TuNombreDeUsuario"}
+                                                            placeholder={"Welcome"}
                                                             state={setUser}
                                                             errorState={setUserError}
                                                         />
@@ -92,13 +100,13 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
 
                                             {/* PASSWORD LOGIN */}
                                             <Form.Group className="mb-3">
-                                                <div className="labelLogin">Contraseña:</div>
+                                                <div className="labelLogin">Password:</div>
                                                 <Col>
                                                     <InputText
                                                         type={"password"}
                                                         design={userError.passwordError ? 'errorInput' : 'normalInput'}
                                                         name={"password"}
-                                                        placeholder={"Hola1234"}
+                                                        placeholder={"******"}
                                                         state={setUser}
                                                         errorState={setUserError}
                                                     />
@@ -125,7 +133,7 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                         // setMode('login');
                                         // onClose();
                                     }}
-                                    text={mode === 'login' ? 'Get in!' : 'Register'}
+                                    text={mode === 'login' ? 'Go!' : 'Register'}
                                 />
                             </div>
 
