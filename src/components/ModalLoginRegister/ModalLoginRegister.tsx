@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Row, Form, Modal } from "react-bootstrap";
 import { InputText } from '../InputText/InputText';
 import '../../index.css';
 import { TodoButton } from '../TodoButton/TodoButton';
 import { useAuthUser } from '../../../hooks/useAuthUser';
-
-interface ModalLoginRegisterProps {
-    show: boolean;
-    onClose: () => void;
-}
+import { UserError } from '../../types/users';
+import { ModalLoginRegisterProps } from '../../types/api';
 
 export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, onClose }) => {
-
     const { user, setUser, userError, setUserError, submitHandlerLogin, submitHandlerRegister } = useAuthUser();
     const [mode, setMode] = useState<'login' | 'register'>('login');
+
+    //CLEAN ERRORS
+    useEffect(() => {
+        setUserError({} as UserError);
+    }, [mode, setUserError, onClose]);
 
     //SHOW REGISTER 
     const handleRegisterClick = () => {
@@ -27,23 +28,20 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
 
     //RENDER LOGIN / REGISTER TITLE
     const renderTitle = () => {
-        if (mode === 'login') {
-            return <Card.Title className="text-center mb-2 display-5"
-                style={{ color: 'rgba(42, 190, 64, 0.66)', textShadow: '-0.04em -0.04em 0 blue' }}
-            >
-                <strong>Login</strong>
-            </Card.Title>;
-        } else {
-            return <Card.Title className="text-center mb-2 display-5"
-                style={{ color: 'rgba(42, 190, 64, 0.66)', textShadow: '-0.04em -0.04em 0 blue' }}
-            >
-                <strong>Register</strong>
-            </Card.Title>;
-        }
+        return (
+            <div
+                className="text-center mb-3 display-5"
+                style={{
+                    color: 'rgba(42, 190, 64, 0.66)',
+                    textShadow: '-0.04em -0.04em 0 blue',
+                    fontWeight: 'bold'
+                }}>
+                <div>{mode === 'login' ? 'Login' : 'Register'}</div>
+            </div>
+        );
     };
 
     return (
-
         //MODAL LOGIN / REGISTER
         <Modal show={show} onHide={onClose}>
             <Modal.Body>
@@ -52,8 +50,7 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                         <Card
                             style={{
                                 backgroundColor: '#9f512121',
-                                border: '0.1em solid #614a1971',
-                                borderRadius: '2em'
+                                borderRadius: '1em'
                             }}>
 
                             {/* RENDER TITLE */}
@@ -63,55 +60,65 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                 <Row className="justify-content-center align-items-center">
                                     <Col xs={10} md={6}>
                                         <Form as={Row}>
-
                                             {/* IF THE USER CLICKS ON REGISTER DISPLAY USERNAME */}
                                             {mode === 'register' && (
                                                 <Form.Group className="">
-                                                    <div className="labelLogin">Username:</div>
-                                                    <Col>
-                                                        <InputText
-                                                            type={"text"}
-                                                            design={userError.userNameError ? 'errorInput' : 'normalInput'}
-                                                            name={"userName"}
-                                                            placeholder={"Welcome"}
-                                                            state={setUser}
-                                                            errorState={setUserError}
-                                                        />
-                                                    </Col>
-                                                    <div className="errorText">{userError.userNameError}</div>
+                                                    <Form.Label
+                                                        style={{ marginBlock: '0em', marginTop: '0.6em' }}
+                                                        htmlFor="username"
+                                                        className="labelLogin"
+                                                    >Username:
+                                                    </Form.Label>
+                                                    <InputText
+                                                        type={"text"}
+                                                        design={userError.usernameError ? 'errorInput' : 'normalInput'}
+                                                        name={"username"}
+                                                        placeholder={"Welcome"}
+                                                        state={setUser}
+                                                        errorState={setUserError}
+                                                        autoCompleteValue={"username"}
+                                                    />
+                                                    <div className="errorText">{userError.usernameError}</div>
                                                 </Form.Group>
                                             )}
 
                                             {/* EMAIL LOGIN */}
-                                            <Form.Group className="">
-                                                <div className="labelLogin">Email:</div>
-                                                <Col>
-                                                    <InputText
-                                                        type={"email"}
-                                                        design={userError.emailError ? 'errorInput' : 'normalInput'}
-                                                        name={"email"}
-                                                        placeholder={"user@user.com"}
-                                                        state={setUser}
-                                                        errorState={setUserError}
-                                                    />
-                                                    <div className="errorText">{userError.emailError}</div>
-                                                </Col>
+                                            <Form.Group >
+                                                <Form.Label
+                                                    style={{ marginBlock: '0em', marginTop: '0.6em' }}
+                                                    htmlFor="email"
+                                                    className="labelLogin"
+                                                >Email:
+                                                </Form.Label>
+                                                <InputText
+                                                    type={"email"}
+                                                    design={userError.emailError ? 'errorInput' : 'normalInput'}
+                                                    name={"email"}
+                                                    placeholder={"user@user.com"}
+                                                    state={setUser}
+                                                    errorState={setUserError}
+                                                    autoCompleteValue={"email"}
+                                                />
+                                                <div className="errorText">{userError.emailError}</div>
                                             </Form.Group>
 
                                             {/* PASSWORD LOGIN */}
                                             <Form.Group className="mb-3">
-                                                <div className="labelLogin">Password:</div>
-                                                <Col>
-                                                    <InputText
-                                                        type={"password"}
-                                                        design={userError.passwordError ? 'errorInput' : 'normalInput'}
-                                                        name={"password"}
-                                                        placeholder={"******"}
-                                                        state={setUser}
-                                                        errorState={setUserError}
-                                                    />
-                                                    <div className="errorText">{userError.passwordError}</div>
-                                                </Col>
+                                                <Form.Label
+                                                    style={{ marginBlock: '0em', marginTop: '0.6em' }}
+                                                    htmlFor="password" className="labelLogin"
+                                                >Contraseña:
+                                                </Form.Label>
+                                                <InputText
+                                                    type={"password"}
+                                                    design={userError.passwordError ? 'errorInput' : 'normalInput'}
+                                                    name={"password"}
+                                                    placeholder={"******"}
+                                                    state={setUser}
+                                                    errorState={setUserError}
+                                                    autoCompleteValue={"current-password"}
+                                                />
+                                                <div className="errorText">{userError.passwordError}</div>
                                             </Form.Group>
                                         </Form>
                                     </Col>
@@ -124,14 +131,13 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                             ) : (
                                 <></>
                             )}
-                            <div className="d-flex justify-content-center">
+
+                            <div className="d-flex justify-content-center mt-3">
 
                                 {/* LOGIN / REGISTER BUTTON */}
                                 <TodoButton
                                     onClick={(e) => {
-                                        mode === 'login' ? submitHandlerLogin(e, user) : submitHandlerRegister(e, user);
-                                        // setMode('login');
-                                        // onClose();
+                                        mode === 'login' ? submitHandlerLogin(e, user, onClose) : submitHandlerRegister(e, user, onClose);
                                     }}
                                     text={mode === 'login' ? 'Go!' : 'Register'}
                                 />
@@ -142,7 +148,6 @@ export const ModalLoginRegister: React.FC<ModalLoginRegisterProps> = ({ show, on
                                 <div onClick={handleRegisterClick} className='m-2' style={{ cursor: 'pointer' }}>Register</div>
                                 <div onClick={handleLoginClick} className='m-2' style={{ cursor: 'pointer' }}>Login</div>
                             </div>
-
                         </Card>
                     </Row>
                 </Container>

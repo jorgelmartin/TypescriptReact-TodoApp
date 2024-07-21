@@ -1,11 +1,7 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { PropsCreateTodo } from '../../types/todos';
 
-//DEFINE PROPS
-interface Props {
-    addTodo: (text: string) => void;
-}
-
-export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
+export const CreateTodo: React.FC<PropsCreateTodo> = ({ addTodo, errorMessage  }) => {
     const [inputValue, setInputValue] = useState('');
 
     //CHECK IF THE PRESSED KEY IS 'ENTER' AND CALL ADDTODO WITH THE VALUE OF INPUTVALUE
@@ -17,12 +13,13 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
     };
 
     return (
-        <div style=
-            {{ 
-                marginTop: '-3em',
-                textAlign:'center' 
+        <div style={{ 
+                marginTop: '-4.6em',
+                textAlign:'center',
+                userSelect: 'none'
             }}> 
             <input
+                id="new-todo"
                 className="new-todo"
                 value={inputValue}
                 onChange={(e) => {
@@ -32,6 +29,7 @@ export const CreateTodo: React.FC<Props> = ({ addTodo }) => {
                 placeholder='Write your task'
                 autoFocus
             />
+            {errorMessage && <div className="errorText">{errorMessage.message}</div>}
         </div>
     );
 };

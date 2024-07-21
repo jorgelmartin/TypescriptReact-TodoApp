@@ -1,13 +1,7 @@
-import { FiltersButton } from "../../consts"
-import { filterValue } from "../../types"
+import { FiltersButton } from "../../consts";
+import { filterValue, PropsFilterTodos } from "../../types/todos";
 
-//DEFINE PROPS
-interface Props {
-    onFilterChange: (filter: filterValue) => void
-    filterSelected: filterValue
-}
-
-export const Filters: React.FC<Props> = ({
+export const Filters: React.FC<PropsFilterTodos> = ({
     filterSelected,
     onFilterChange
 }) => {

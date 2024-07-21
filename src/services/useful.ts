@@ -1,3 +1,4 @@
+
 //CHECKERROR
 export const checkError = (name: string, value: string): string => {
     switch (name) {
@@ -23,17 +24,11 @@ export const checkError = (name: string, value: string): string => {
             if (!/[A-Z]/.test(value)) {
                 return "El password debe contener al menos una letra mayúscula";
             }
-            // if (!/\d/.test(value)) {
-            //     return "El password debe contener al menos un número";
-            // }
             return "";
 
         //CHECKING NAME ERROR
-        case "userName":
-            // if (!/^[a-zA-Z]+$/.test(value)) {
-            //     return "El nombre debe contener solo letras";
-            // }
-            if (value.length > 10) {
+        case "username":
+            if (value.length > 12) {
                 return "No puede tener más de 12 caracteres";
             }
             return "";

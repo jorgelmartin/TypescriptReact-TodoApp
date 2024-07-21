@@ -1,69 +1,78 @@
 import { useState, useEffect } from 'react';
-import { Credentials, Register, loginMe } from '../src/services/ApiCalls';
+import { Register, loginMe } from '../src/services/ApiCalls';
 import { useDispatch } from "react-redux";
 import { login } from "../src/userSlice";
-import { User, UserError } from '../src/types';
-import { useNavigate } from 'react-router-dom';
+import { User, UserError } from '../src/types/users';
+import { Credentials, LoginResponse, RegisterResponse } from '../src/types/api';
 
 export const useAuthUser = (
 ) => {
-    const [user, setUser] = useState<User>({ userName:'', email: '', password: '' });
-    const [userError, setUserError] = useState<UserError>({ userNameError:'', emailError: '', passwordError: '', message: '' });
-
-    const [userLogin, setUserLogin] = useState<any | null>(null);
-    const [token, setToken] = useState<string | null>(null);
-
+    const [user, setUser] = useState<User>({
+        username: '',
+        id: 0,
+        role: '',
+        email: '',
+        password: '',
+    });
+    const [userError, setUserError] = useState<UserError>({
+        usernameError: '',
+        emailError: '',
+        passwordError: '',
+        message: ''
+    });
+    const [userLogin, setUserLogin] = useState<LoginResponse | ''>('');
+    const [userRegister, setUserRegister] = useState<RegisterResponse | ''>('');
+    const [token, setToken] = useState<string | ''>('');
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const submitHandlerLogin = (e: React.MouseEvent<HTMLButtonElement>, body:User) => {
+    // LOGIN
+    const submitHandlerLogin = (e: React.MouseEvent<HTMLButtonElement>, body: User, onClose: () => void) => {
         e.preventDefault();
-
         //SEND TOKEN AND DATA
         loginMe(body)
             .then((res) => {
                 setToken(res.data.token);
                 setUserLogin(res.data);
-                navigate('/Todos'); 
+                onClose();
             })
             .catch((error) => {
                 setUserError({
-                    emailError: error.response.data.emailError || '',  
-                    passwordError: error.response.data.passwordError || '', 
-                    message: error.response.data.message || '', 
+                    emailError: error.response.data.emailError || '',
+                    passwordError: error.response.data.passwordError || '',
+                    message: error.response.data.message || '',
                 });
             });
     };
 
-    const submitHandlerRegister = (e: React.MouseEvent<HTMLButtonElement>, body: User) => {
-    e.preventDefault();
-    const { userName, email, password } = body;
-    const credentials: Credentials = { email, password };
-    if (userName) {
-        credentials.user_name = userName; 
-    }
-    Register(credentials)
-    
-        .then((res) => {
-            setUserLogin(res.data);
-            navigate('/Todos'); 
-        })
-        .catch((error) => {
-            setUserError({
-                userNameError: error.response.data.userNameError || '',
-                emailError: error.response.data.emailError || '', 
-                passwordError: error.response.data.passwordError || '',
-                message: error.response.data.message || '',  
-            });
-        });
-};
+    // REGISTER
+    const submitHandlerRegister = (e: React.MouseEvent<HTMLButtonElement>, body: User, onClose: () => void) => {
+        e.preventDefault();
+        const { username, email, password } = body;
 
+        const credentials: Credentials = { username, email, password };
+        Register(credentials)
+            .then((res) => {
+                setToken(res.data.token);
+                setUserRegister(res.data);
+                onClose();
+            })
+            .catch((error) => {
+                setUserError({
+                    usernameError: error.response.data.usernameError || '',
+                    emailError: error.response.data.emailError || '',
+                    passwordError: error.response.data.passwordError || '',
+                    message: error.response.data.message || '',
+                });
+            });
+    };
+
+    // DISPATCH WITH LOGIN
     useEffect(() => {
         if (token && userLogin) {
             dispatch(
                 login({
                     token: userLogin.token,
-                    userName: userLogin.user.user_name,
+                    username: userLogin.user.username,
                     userId: userLogin.user.id,
                     role: userLogin.user.role
                 })
@@ -71,10 +80,26 @@ export const useAuthUser = (
         }
     }, [token, userLogin]);
 
+    // DISPATCH WITH REGISTER
+    useEffect(() => {
+        if (token && userRegister) {
+            dispatch(
+                login({
+                    token: userRegister.token,
+                    username: userRegister.userRegistered.username,
+                    userId: userRegister.userRegistered.userId,
+                    role: userRegister.userRegistered.role
+                })
+            );
+        }
+    }, [token, userRegister]);
+
     return {
         user,
         setUser,
         userError,
+        userRegister,
+        setUserRegister,
         setUserError,
         userLogin,
         setUserLogin,

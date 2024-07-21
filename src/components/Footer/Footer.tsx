@@ -1,16 +1,7 @@
-import { type filterValue } from "../../types"
-import { Filters } from "../Filters/Filters"
+import { PropsFooterTodos } from "../../types/todos";
+import { Filters } from "../Filters/Filters";
 
-//DEFINE PROPS
-interface Props {
-    activeCount: number,
-    completedCount: number,
-    filterSelected: filterValue,
-    onClearCompleted: () => void
-    handleFilterChange: (filter: filterValue) => void
-}
-
-export const Footer: React.FC<Props> = ({
+export const Footer: React.FC<PropsFooterTodos> = ({
     activeCount = 0,
     completedCount = 0,
     filterSelected,
@@ -47,4 +38,4 @@ export const Footer: React.FC<Props> = ({
             </div>
         </footer>
     )
-}
+};

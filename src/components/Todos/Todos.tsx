@@ -1,16 +1,8 @@
+import { useState } from "react";
+import { PropsTodosComponent } from "../../types/todos";
+import { Todo } from "../Todo/Todo";
 
-import { useState } from "react"
-import { type Todo as TodoType } from "../../types"
-import { Todo } from "../Todo/Todo"
-
-interface Props {
-    todos: TodoType[]
-    completedTodo: (id: number, completed: boolean) => void
-    setTitle: (params: Omit<TodoType, 'completed'>) => void
-    removeTodo: (id: number) => void
-}
-
-export const Todos: React.FC<Props> = ({
+export const Todos: React.FC<PropsTodosComponent> = ({
     todos,
     removeTodo,
     completedTodo,
@@ -51,5 +43,5 @@ export const Todos: React.FC<Props> = ({
             ))
             }
         </div >
-    )
-}
+    );
+};

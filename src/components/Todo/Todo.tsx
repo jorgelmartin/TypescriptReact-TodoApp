@@ -1,17 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { PropsTodoComponent } from "../../types/todos";
 
-interface Props {
-    id: number;
-    text: string;
-    completed: boolean;
-    completedTodo: (id: number, completed: boolean) => void;
-    setTitle: (params: { id: number; text: string }) => void;
-    isEditing: string
-    setIsEditing: (completed: string) => void
-    removeTodo: (id: number) => void;
-}
-
-export const Todo: React.FC<Props> = ({
+export const Todo: React.FC<PropsTodoComponent> = ({
     id,
     text,
     completed,
@@ -26,8 +16,6 @@ export const Todo: React.FC<Props> = ({
     const inputEditTitle = useRef<HTMLInputElement>(null);
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-
-        //CHECK IF THE 'ENTER' KEY IS PRESSED
         if (e.key === 'Enter') {
 
             //TRIM WHITESPACE FROM THE EDITED TITLE
@@ -37,29 +25,21 @@ export const Todo: React.FC<Props> = ({
             if (editedTitle !== text) {
                 setTitle({ id, text: editedTitle })
             }
-
-            //REMOVE THE TODO IF THE EDITED TITLE IS EMPTY
             if (editedTitle === '') removeTodo(id)
-
-            //EXIT THE EDITING MODE
             setIsEditing('')
-        }
+        };
 
-        //CHECK IF THE 'ESCAPE' KEY IS PRESSED
+        //CHECK IF THE 'ESCAPE' KEY IS PRESSED EXIT THE EDITING MODE
         if (e.key === 'Escape') {
-
-            //RESET THE EDITED TITLE TO THE ORIGINAL TEXT
             setEditedTitle(text)
-
-            //EXIT THE EDITING MODE
             setIsEditing('')
         }
-    }
+    };
     useEffect(() => {
 
         //FOCUS ON THE INPUT ELEMENT FOR EDITING THE TITLE WHEN 'isEditing' CHANGES
         inputEditTitle.current?.focus()
-    }, [isEditing])
+    }, [isEditing]);
 
     return (
         <>
@@ -67,6 +47,7 @@ export const Todo: React.FC<Props> = ({
 
                 {/* CHECKBOX FOR MARKING THE TODO AS COMPLETED */}
                 <input
+                    id={`todoCompleted${id}`}
                     className="toggle"
                     checked={completed}
                     type="checkbox"
@@ -74,7 +55,7 @@ export const Todo: React.FC<Props> = ({
                 />
 
                 {/* LABEL TO DISPLAY THE TODO TEXT */}
-                <label>{text}</label>
+                <label htmlFor={`todoCompleted${id}`}>{text}</label>
 
                 {/* BUTTON TO REMOVE THE TODO */}
                 <button
@@ -86,13 +67,15 @@ export const Todo: React.FC<Props> = ({
 
             {/* INPUT SECTION FOR EDITING THE TODO */}
             <input
+                id={`todoEdit${id}`}
                 className='edit'
                 value={editedTitle}
                 onChange={(e) => { setEditedTitle(e.target.value) }}
                 onKeyDown={handleKeyDown}
                 onBlur={() => { setIsEditing('') }}
                 ref={inputEditTitle}
+                name={`todoEdit${id}`}
             />
         </>
-    )
-}
+    );
+};

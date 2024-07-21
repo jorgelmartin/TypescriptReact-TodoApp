@@ -18,4 +18,3 @@ export const FiltersButton = {
         href: `/?filter=${TodoFilters.completed}`
     }
 } as const
-

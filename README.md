@@ -1,8 +1,8 @@
 # TODO APP React + TypeScript 
 
-!['Todo-app'](./src/assets/Todo-app.png)
+!['todoApp'](./src/assets/todoApp.png)
 
-[Enlace Backend:](https://github.com/jorgemctin/BackendTS-TodoApp)
+### [Enlace Backend](https://github.com/jorgemctin/BackendTS-TodoApp)
 
 ### Tecnologías:
 
@@ -17,19 +17,19 @@ Desarrollo y diseño de una aplicación que posibilite a los usuarios registrar 
 
 ### REGISTRO / LOGIN
 
-!['register'](./src/assets/register.png)!['login'](./src/assets/login.png)
+!['register'](./src/assets/register1.png)!['login'](./src/assets/login1.png)
 
 El primer paso será registrarse, para poder acceder a todos los beneficios de la app.
 
 ### TODOS
 
-!['Todo-app'](./src/assets/Todo-app.png)
+!['todoApp'](./src/assets/todoApp.png)
 
 Después del inicio de sesión, el nombre de usuario se mostrará en la esquina superior derecha para una identificación rápida. Los usuarios tendrán control total sobre el gestor de tareas, permitiéndoles crear, leer, editar y eliminar tareas. Además, podrán filtrar tareas según su estado, como activas/pendientes, completadas y ver todas las tareas. 
 
 ### Filtro invertido
 
-!['Todo-app'](./src/assets/Todo-invert.jpg)
+!['todoApp'](./src/assets/Todo-invert.png)
 
 Se tiene la posibilidad de invertir el filtro de colores haciendo clic en la luna 🌙.
 

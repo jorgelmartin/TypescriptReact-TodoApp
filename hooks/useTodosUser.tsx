@@ -2,50 +2,43 @@ import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { TodoFilters } from '../src/consts';
 import { getAllMyTodos, createTodo, updateTodoText, updateTodoCompleted, deleteTodo } from '../src/services/ApiCalls';
-import { UserData, type Todo as TodoType, ApiResponse, filterValue } from '../src/types';
-
-interface TodosUser {
-  todos: TodoType[];
-  addTodo: (text: string) => void;
-  updateCompleted: (id: number, completed: boolean) => void;
-  removeTodo: (id: number) => void;
-  updateText: (params: { id: number; text: string }) => void;
-  setFilter: (filter: filterValue) => void;
-  activeCount: number;
-  completedCount: number;
-  handleFilterChange: (filter: filterValue) => void;
-  handleClearCompleted: () => void;
-  filterSelected: filterValue;
-}
+import { UserData } from '../src/types/users';
+import { filterValue, TodoError, TodosUser, TodoType } from '../src/types/todos';
+import { ApiResponse } from '../src/types/api';
 
 export const useTodosUser = (): TodosUser => {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const { credentials: { token }, data: { userId } } = useSelector((state: UserData) => state.user);
   const [filterSelected, setFilterSelected] = useState<filterValue>(TodoFilters.all);
+  const [errorMessage, setErrorMessage] = useState<TodoError | ''>('');
 
+  // GET ALL MY TODOS
   useEffect(() => {
+    if (!token) {
+      setTodos([]);
+      setErrorMessage('');
+      return;
+    }
     getAllMyTodos(userId, token).then((response) => {
       setTodos(response.data.todos);
     });
-  }, [userId]);
+  }, [userId, token]);
 
+  // CREATE A TODO
   const addTodo = (text: string) => {
     createTodo({ text, user_id: userId }, token)
       .then((response) => {
-        console.log("Todo created", response);
-
         const responseData = response.data as ApiResponse;
         setTodos((prevTodos) => [...prevTodos, responseData.todo]);
+        setErrorMessage('');
       })
       .catch((error) => {
-        console.error('Error creating todo:', error);
+        setErrorMessage(error.response?.data || { success: false });
       });
   };
 
-
-  const updateText = (params: { id: number; text: string }) => {
-    console.log('Updating text for todo with id:', params.id);
-
+  // UPDATE TODO
+  const updateTodo = (params: { id: number; text: string }) => {
     const { id, text } = params;
     const newText = text.trim();
 
@@ -57,12 +50,16 @@ export const useTodosUser = (): TodosUser => {
             todo.id === id ? { ...todo, text: newText } : todo
           )
         );
+        setErrorMessage('');
       })
       .catch((error) => {
+        
         console.error('Error updating todo text:', error);
+        setErrorMessage(error.response?.data || { success: false });
       });
   };
 
+  // UPDATE COMPLETE TODO
   const updateCompleted = (id: number, completed: boolean) => {
     updateTodoCompleted(id, completed, token)
       .then((response) => {
@@ -77,6 +74,7 @@ export const useTodosUser = (): TodosUser => {
       });
   };
 
+  // REMOVE TODO
   const removeTodo = (id: number) => {
     deleteTodo(id, token)
       .then(() => {
@@ -87,7 +85,7 @@ export const useTodosUser = (): TodosUser => {
       });
   };
 
-  // Función para filtrar los todos según el filtro seleccionado
+  // FILTER TODOS
   const filterTodos = todos.filter((todo) => {
     if (filterSelected === TodoFilters.active) {
       return !todo.completed;
@@ -104,16 +102,12 @@ export const useTodosUser = (): TodosUser => {
     setFilterSelected(filter);
   };
 
-
+  // DELETE COMPLETED TODOS
   const handleClearCompleted = () => {
     const completedTodoIds = todos
       .filter((todo) => todo.completed)
       .map((completedTodo) => completedTodo.id);
-
-    // Actualiza la lista de todos excluyendo los completados
     setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
-
-    // Llama a la función removeTodo para eliminar los todos completados en el servidor
     completedTodoIds.forEach((id) => removeTodo(id));
   };
 
@@ -122,13 +116,15 @@ export const useTodosUser = (): TodosUser => {
   };
 
   return {
-    updateText,
+    updateTodo,
     updateCompleted,
     removeTodo,
     todos: filterTodos,
     // filter,
+    errorMessage,
     setFilter,
     activeCount,
+    setErrorMessage,
     completedCount,
     addTodo,
     handleFilterChange,

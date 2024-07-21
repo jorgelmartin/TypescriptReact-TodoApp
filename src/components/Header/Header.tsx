@@ -1,16 +1,19 @@
+import { PropsHeaderTodos } from "../../types/todos";
 import { CreateTodo } from "../CreateTodo/CreateTodo";
 
-interface Props {
-    addTodo: (text: string) => void;
-}
-
-export const Header: React.FC<Props> = ({ addTodo }) => {
+export const Header: React.FC<PropsHeaderTodos> = ({ addTodo, errorMessage }) => {
     return (
         <header className="header">
 
             {/* TITLE WITH TYPESCRIPT LOGO */}
-            <h1 className="mt-5" >
-                <strong>TODO</strong>
+            <h1 className="d-flex justify-content-center" 
+            style={{ 
+                userSelect: 'none',
+                fontFamily:'bold', 
+                fontSize:'4em',
+                marginTop:'1.16em'
+                }}>
+                <div>TO-DO</div>
                 <img
                     style={{ width: '0.6em' }}
                     src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
@@ -19,7 +22,10 @@ export const Header: React.FC<Props> = ({ addTodo }) => {
             </h1>
 
             {/* CreateTodo COMPONENT FOR ADDING NEW TASK */}
-            <CreateTodo addTodo={addTodo} />
+            <CreateTodo
+                addTodo={addTodo}
+                errorMessage={errorMessage}
+            />
         </header>
     );
 };

@@ -22,6 +22,10 @@ html {
   border: 0.04em solid red;
 }
 
+.errorText {
+  color: red;
+}
+
 .labelLogin {
   width: 10em;
   font-weight: bold;
@@ -32,6 +36,7 @@ html {
   padding: 0.1em;
   margin-top: 0.3em;
   background-color: #699f21bd;
+  margin-block: none;
 }
 
 .loginDataUser {
@@ -46,9 +51,10 @@ html {
   padding: 0.3em 0.3em;
   border: 0.01em solid rgb(9, 71, 9);
   border-radius: 0.6em;
-  font-size: 1em;
+  font-size: 1.06em;
   cursor: pointer;
-  margin-top: 1.3em;
+  margin-top: -3em;
+  /* margin-bottom: 0.3em; */
   transition: transform 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0.04em 0.04em 0.5em 0.2em rgba(21, 61, 9, 0.532);
     text-shadow:
@@ -60,13 +66,10 @@ html {
   box-shadow: none;
 }
 
-
 .borderContainer {
   background-color: antiquewhite;
-  /* width: 30em; */
   padding: 1.4em;
   padding-bottom: 0.4em;
-  /* margin-top: 0.4em; */
   height: auto;
   border-radius: 2em;
   border: 0.1em solid rgba(15, 115, 14, 0.964);
@@ -83,9 +86,8 @@ html {
   rgba(26, 255, 0, 0.2) 0em 1em 1em inset;
 }
 
-.userName {
+.username {
   color: rgba(42, 190, 64, 0.66);
   text-shadow:
     -0.04em -0.04em 0 blue;
 }
-
