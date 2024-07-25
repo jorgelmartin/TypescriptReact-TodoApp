@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { ApiResponse, ApiResponseGetAll, Credentials, LoginResponse, RegisterResponse, TodoCreate } from '../types/api';
 
-const URLAUTH = "http://localhost:3000/auth/";
-const URLTODO = "http://localhost:3000/todo/";
+const URLAUTH = "https://backend-ts-todo-app.vercel.app/auth/";
+const URLTODO = "https://backend-ts-todo-app.vercel.app/todo/";
 
 //LOGIN
 export const loginMe = async (credentials: Credentials): Promise<AxiosResponse<LoginResponse>> => {
